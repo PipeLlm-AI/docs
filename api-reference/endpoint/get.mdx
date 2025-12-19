@@ -1,4 +1,71 @@
 ---
-title: 'Get Plants'
-openapi: 'GET /plants'
+title: 'Chat Completions'
+openapi: 'POST /v1/chat/completions'
 ---
+
+<Note>
+  This endpoint is the most commonly used for chat-based interactions with LLMs.
+</Note>
+
+## Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| model | string | ✅ | Model name (e.g., "gpt-4", "claude-3-sonnet") |
+| messages | array | ✅ | Array of message objects |
+| temperature | number | ❌ | Sampling temperature (0-2) |
+| max_tokens | number | ❌ | Maximum tokens to generate |
+| stream | boolean | ❌ | Enable streaming response |
+
+## Example
+
+```json
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Write a Python function to check if a number is prime"
+    }
+  ],
+  "temperature": 0.7,
+  "max_tokens": 500
+}
+```
+
+## Response
+
+```json
+{
+  "id": "chat-123",
+  "choices": [
+    {
+      "message": {
+        "role": "assistant",
+        "content": "def is_prime(n):\n    if n <= 1:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True"
+      },
+      "finish_reason": "stop",
+      "index": 0
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 15,
+    "completion_tokens": 25,
+    "total_tokens": 40
+  }
+}
+```
+
+## Streaming Example
+
+Set `"stream": true` to receive real-time responses:
+
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "gpt-4",
+    "messages": [{"role": "user", "content": "Hello"}],
+    "stream": true
+  }'
+```

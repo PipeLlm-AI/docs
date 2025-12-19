@@ -1,4 +1,59 @@
 ---
-title: 'Delete Plant'
-openapi: 'DELETE /plants/{id}'
+title: 'Embeddings'
+openapi: 'POST /v1/embeddings'
 ---
+
+<Note>
+  This endpoint generates vector embeddings for text, commonly used for semantic search and RAG applications.
+</Note>
+
+## Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| model | string | ✅ | Model name (e.g., "text-embedding-ada-002") |
+| input | array | ✅ | Array of text strings to embed |
+
+## Example
+
+```json
+{
+  "model": "text-embedding-ada-002",
+  "input": [
+    "这是一个示例文本",
+    "这是另一个示例"
+  ]
+}
+```
+
+## Response
+
+```json
+{
+  "data": [
+    {
+      "index": 0,
+      "embedding": [0.1, 0.2, 0.3, ...],
+      "object": "embedding"
+    },
+    {
+      "index": 1,
+      "embedding": [0.4, 0.5, 0.6, ...],
+      "object": "embedding"
+    }
+  ],
+  "model": "text-embedding-ada-002",
+  "object": "list",
+  "usage": {
+    "prompt_tokens": 10,
+    "total_tokens": 10
+  }
+}
+```
+
+## Use Cases
+
+- Semantic search
+- Document similarity
+- RAG applications
+- Clustering and classification

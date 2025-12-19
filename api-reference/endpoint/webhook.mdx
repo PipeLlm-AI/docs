@@ -1,4 +1,50 @@
 ---
-title: 'New Plant'
-openapi: 'WEBHOOK /plant/webhook'
+title: 'Audio Transcriptions'
+openapi: 'POST /v1/audio/transcriptions'
 ---
+
+<Note>
+  This endpoint converts audio files to text using speech-to-text models.
+</Note>
+
+## Request
+
+Use multipart form data to upload audio files:
+
+```bash
+curl https://api.pipellm.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@audio.mp3" \
+  -F "model=whisper-1"
+```
+
+## Parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| file | file | ✅ | Audio file (mp3, wav, m4a, etc.) |
+| model | string | ✅ | Model name (e.g., "whisper-1") |
+| language | string | ❌ | Language code (e.g., "en", "zh") |
+
+## Response
+
+```json
+{
+  "text": "Hello, this is a test audio file.",
+  "language": "en",
+  "duration": 15.5
+}
+```
+
+## Supported Formats
+
+- **Audio**: mp3, wav, m4a, mp4, mpga, m4v, webm
+- **Max Size**: 25MB
+- **Languages**: Auto-detect or specify language
+
+## Use Cases
+
+- Podcast transcription
+- Meeting notes
+- Voice assistant responses
+- Customer support calls

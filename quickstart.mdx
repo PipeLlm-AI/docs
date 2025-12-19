@@ -1,80 +1,94 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Get started with PipeLLM Gateway in minutes"
 ---
 
-## Get started in three steps
+# Quickstart
 
-Get your documentation site running locally and make your first customization.
+Get your PipeLLM Gateway integration running in minutes.
 
-### Step 1: Set up your local environment
+## 🚀 Three Simple Steps
+
+### Step 1: Get Your API Key
 
 <AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
+  <Accordion icon="key" title="Obtain API Key">
+    Contact your administrator or sales representative to get your API key.
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
+  <Accordion icon="terminal" title="Set Up Environment">
+    1. Install your preferred SDK (OpenAI, Anthropic, etc.)
+    2. Set your API key
+    3. Configure the gateway URL
   </Accordion>
 </AccordionGroup>
 
-### Step 2: Deploy your changes
+### Step 2: Modify Your Code (2 Steps!)
 
 <AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+  <Accordion icon="code" title="Update SDK Configuration">
+    **For Anthropic SDK:**
+    ```python
+    from anthropic import Anthropic
+    client = Anthropic(
+        api_key="your-pipellm-key",
+        base_url="https://api.pipellm.com/v1"  # Point to our gateway
+    )
+    ```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+    **For OpenAI SDK:**
+    ```python
+    import openai
+    client = openai.OpenAI(
+        api_key="your-pipellm-key",
+        base_url="https://api.pipellm.com/v1"  # Point to our gateway
+    )
+    ```
+  </Accordion>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
+  <Accordion icon="play" title="Test Your Connection">
+    ```python
+    response = client.messages.create(
+        model="claude-3-sonnet",
+        messages=[{"role": "user", "content": "Hello"}]
+    )
+    print(response.content[0].text)
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Step 3: Go live
+### Step 3: Go Live
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
+<Accordion icon="rocket" title="Deploy">
+  1. Update your production configuration
+  2. Monitor usage via management dashboard
+  3. Start enjoying better performance and cost optimization!
 </Accordion>
 
-## Next steps
+## 📚 Next Steps
 
-Now that you have your docs running, explore these key features:
+<Columns cols={2}>
+  <Card title="Gateway Features" icon="gateway" href="/api-reference/gateway-introduction">
+    Learn about PipeLLM Gateway core capabilities.
+  </Card>
 
-<CardGroup cols={2}>
+  <Card title="Protocol Conversion" icon="arrows-rotate" href="/api-reference/format-conversion">
+    Understand transparent protocol conversion.
+  </Card>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+  <Card title="Supported Platforms" icon="server" href="/api-reference/supported-platforms">
+    See all supported LLM providers.
+  </Card>
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+  <Card title="Advanced Configuration" icon="cog" href="/development">
+    Configure advanced settings and monitoring.
+  </Card>
+</Columns>
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+## 💡 Pro Tips
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+- **Zero Code Changes**: Use existing SDKs without modification
+- **Smart Routing**: Gateway auto-selects best provider
+- **High Performance**: < 100ms gateway latency
+- **Enterprise Ready**: 99.9% uptime guarantee
 
-</CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+**Need help?** Contact support@pipellm.com

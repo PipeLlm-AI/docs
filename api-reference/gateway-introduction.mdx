@@ -1,0 +1,252 @@
+---
+title: "PipeLLM Gateway API"
+description: "High-performance LLM API gateway with format conversion and unified access"
+i18n: "en"
+---
+
+<LanguageSwitcher />
+
+## SDK Examples
+
+### OpenAI SDK
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+# Chat completions
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"}
+    ]
+)
+print(response.choices[0].message.content)
+
+# Text completions
+response = client.completions.create(
+    model="gpt-3.5-turbo-instruct",
+    prompt="Once upon a time",
+    max_tokens=100
+)
+print(response.choices[0].text)
+
+# Embeddings
+response = client.embeddings.create(
+    model="text-embedding-ada-002",
+    input=["Hello world", "Foo bar"]
+)
+print(response.data[0].embedding)
+
+# Image generation
+response = client.images.generate(
+    model="dall-e-3",
+    prompt="A futuristic city skyline",
+    size="1024x1024"
+)
+print(response.data[0].url)
+
+# Audio transcription
+with open("audio.mp3", "rb") as audio_file:
+    response = client.audio.transcriptions.create(
+        model="whisper-1",
+        file=audio_file
+    )
+print(response.text)
+```
+
+### Anthropic SDK
+
+```python
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+# Messages API
+response = client.messages.create(
+    model="claude-3-sonnet",
+    max_tokens=1000,
+    messages=[
+        {"role": "user", "content": "Hello, Claude!"}
+    ]
+)
+print(response.content[0].text)
+
+# Streaming response
+with client.messages.stream(
+    model="claude-3-haiku",
+    max_tokens=100,
+    messages=[{"role": "user", "content": "Count to 10:"}]
+) as stream:
+    for text in stream.text_stream:
+        print(text, end="", flush=True)
+```
+
+### Google Gemini SDK
+
+```python
+import os
+import google.generativeai as genai
+
+genai.configure(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+# Load model
+model = genai.GenerativeModel('gemini-pro')
+
+# Generate content
+response = model.generate_content("Write a Python function to calculate factorial")
+print(response.text)
+
+# Streaming response
+for chunk in model.generate_content("Tell me a story", stream=True):
+    print(chunk.text, end="")
+```
+
+### LangChain
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+# OpenAI model
+llm = ChatOpenAI(
+    model="gpt-4",
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant."),
+    ("user", "{input}")
+])
+
+chain = prompt | llm
+response = chain.invoke({"input": "What is AI?"})
+print(response.content)
+
+# Anthropic model
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(
+    model="claude-3-sonnet",
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+response = llm.invoke("Hello, Claude!")
+print(response.content)
+```
+
+### cURL Examples
+
+#### Chat Completions
+
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4",
+    "messages": [
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "Hello!"}
+    ],
+    "temperature": 0.7,
+    "max_tokens": 1000
+  }'
+```
+
+#### Streaming Response
+
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4",
+    "messages": [{"role": "user", "content": "Count to 5:"}],
+    "stream": true
+  }'
+```
+
+#### Text Completions
+
+```bash
+curl https://api.pipellm.com/v1/completions \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-3.5-turbo-instruct",
+    "prompt": "Once upon a time",
+    "max_tokens": 100,
+    "temperature": 0.8
+  }'
+```
+
+#### Embeddings
+
+```bash
+curl https://api.pipellm.com/v1/embeddings \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "text-embedding-ada-002",
+    "input": ["Hello world", "Foo bar"]
+  }'
+```
+
+#### Image Generation
+
+```bash
+curl https://api.pipellm.com/v1/images/generations \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "dall-e-3",
+    "prompt": "A futuristic city skyline at sunset",
+    "size": "1024x1024"
+  }'
+```
+
+#### Audio Transcription
+
+```bash
+curl https://api.pipellm.com/v1/audio/transcriptions \
+  -H "Authorization: Bearer your-pipellm-key" \
+  -F "file=@audio.mp3" \
+  -F "model=whisper-1" \
+  -F "language=en"
+```
+
+## Authentication
+
+All requests require an API key:
+
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"gpt-4","messages":[{"role":"user","content":"Hello"}]}'
+```
+
+## Error Codes
+
+| Code | Error | Description |
+|------|-------|-------------|
+| 401 | Unauthorized | Invalid or missing API key |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 502 | Bad Gateway | Upstream service error |
+| 503 | Service Unavailable | Service temporarily unavailable |

@@ -1,0 +1,409 @@
+---
+title: "Supported LLM Platforms"
+description: "All LLM service providers supported by PipeLLM Gateway and their features"
+i18n: "en"
+---
+
+# Supported LLM Platforms
+
+PipeLLM Gateway supports mainstream LLM service providers. **Biggest advantage**: Use official SDKs (Anthropic, OpenAI, Google, etc.), just change baseURL to access any platform transparently.
+
+**No need to learn new APIs, zero code changes!**
+
+**Complete model list**: [https://www.pipellm.com/models](https://www.pipellm.com/models)
+
+## 🤖 OpenAI Ecosystem
+
+### OpenAI Official
+
+**Status**: ✅ Fully supported
+
+**Usage**: Use OpenAI official SDK
+```python
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # Point to our gateway
+)
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**Supported models**:
+- **GPT-4 Series**: `gpt-4`, `gpt-4-turbo`, `gpt-4o`, `gpt-4o-mini`
+- **GPT-3.5 Series**: `gpt-3.5-turbo`, `gpt-3.5-turbo-16k`
+- **Embeddings**: `text-embedding-ada-002`, `text-embedding-3-small`, `text-embedding-3-large`
+- **Speech**: `whisper-1`
+- **Images**: `dall-e-3`, `dall-e-2`
+
+### Azure OpenAI
+
+**Status**: ✅ Fully supported
+
+**Usage**: Use OpenAI SDK, transparently call Azure services
+```python
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # Point to our gateway
+)
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**Supported models**:
+- **GPT-4 Series**: `gpt-4`, `gpt-4-32k`, `gpt-4-turbo`, `gpt-4o`
+- **GPT-3.5 Series**: `gpt-35-turbo`, `gpt-35-turbo-16k`
+- **Embeddings**: `text-embedding-ada-002`
+
+## 🦙 Anthropic Claude
+
+**Status**: ✅ Fully supported
+
+**Usage**: Use Anthropic official SDK
+```python
+from anthropic import Anthropic
+client = Anthropic(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # Point to our gateway
+)
+
+response = client.messages.create(
+    model="claude-3-sonnet",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**Supported models**:
+- **Claude 3 Series**:
+  - `claude-3-haiku` - Fast, economical
+  - `claude-3-sonnet` - Balanced performance
+  - `claude-3-opus` - Highest quality
+  - `claude-3-5-sonnet` - Latest version
+
+**Claude features**:
+- Long context processing (supports 200K tokens)
+- Excellent reasoning and analysis
+- Strong instruction following
+- Tool usage support
+
+**Transparent cross-platform calling**:
+| Your SDK | Actual Platform | Notes |
+|---------|----------------|-------|
+| Anthropic SDK | AWS Bedrock | Auto converts to Bedrock protocol |
+| Anthropic SDK | Google Vertex | Auto converts to Vertex protocol |
+| Anthropic SDK | Azure | Auto converts to Azure protocol |
+| Anthropic SDK | Anthropic Official | Direct call |
+
+## 🤖 Google Gemini
+
+**Status**: ✅ Fully supported
+
+**Usage**: Use Google's native libraries or standard API
+```python
+import requests
+
+headers = {
+    "Authorization": f"Bearer your-pipellm-key",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "model": "gemini-pro",
+    "contents": [{"role": "user", "parts": [{"text": "Hello"}]}]
+}
+
+response = requests.post(
+    "https://api.pipellm.com/v1/chat/completions",
+    headers=headers,
+    json=data
+)
+```
+
+**Supported models**:
+- `gemini-pro` - General-purpose model
+- `gemini-pro-vision` - Multimodal model
+- `gemini-ultra` - Advanced model (if available)
+
+**Gemini features**:
+- Multimodal capabilities (text + images)
+- Code generation optimization
+- Fast response
+- Google ecosystem integration
+
+## ☁️ AWS Bedrock
+
+**Status**: ✅ Fully supported
+
+**Usage**: Use native SDKs to call Bedrock services
+```python
+# Use Anthropic SDK to call Claude on Bedrock
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # Point to our gateway
+)
+
+response = client.messages.create(
+    model="anthropic.claude-3-sonnet-20240229-v1:0",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+
+# Use OpenAI SDK to call Llama 3 on Bedrock
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="meta.llama3-70b-instruct-v1:0",
+    messages=[{"role": "user", "content": "Write a React component"}]
+)
+```
+
+**Supported models**:
+- **Anthropic**: `claude-3-haiku`, `claude-3-sonnet`, `claude-3-opus`
+- **Amazon Titan**: `amazon.titan-text-express-v1`, `amazon.titan-text-lite-v1`
+- **AI21 Labs**: `ai21.j2-mid`, `ai21.j2-ultra`
+- **Cohere**: `cohere.command-text-v14`, `cohere.command-light-text-v14`
+- **Meta**: `meta.llama3-8b-instruct`, `meta.llama3-70b-instruct`, `meta.llama3-1-8b-instruct`, `meta.llama3-1-70b-instruct`, `meta.llama3-2-11b-vision`, `meta.llama3-2-90b-vision`
+- **Mistral**: `mistral.mistral-7b-instruct`, `mistral.mixtral-8x7b-instruct`, `mistral.mistral-large-latest`, `mistral.mistral-small-latest`
+- **Stability AI**: `stability.stable-diffusion-xl-v1`
+
+**Bedrock advantages**:
+- AWS native integration
+- Enterprise-level security
+- Scalability
+- Pay-per-use
+
+## 🌐 Other Cloud Platforms
+
+### Google Vertex AI
+
+**Status**: ✅ Fully supported
+
+### Fireworks AI
+
+**Status**: ✅ Fully supported
+
+**Supported models**:
+- `accounts/fireworks/models/firefunction-v2`
+- `accounts/fireworks/models/llama-v3p1-405b`
+- `accounts/fireworks/models/llama-v3p1-70b`
+- `accounts/fireworks/models/llama-v3p1-8b`
+- `accounts/stabilityai/models/stable-diffusion-xl-1024-v1-0`
+- Other Fireworks models
+
+### Together AI
+
+**Status**: ✅ Fully supported
+
+**Supported models**:
+- `Nous-Hermes-2-Mixtral-8x7B-DPO`
+- `Llama-3-8b-SFT`
+- `CodeLlama-34b`
+- `WizardLM-2-8x22b`
+- Other Together AI models
+
+### Groq
+
+**Status**: ✅ Fully supported
+
+**Supported models**:
+- `llama3-8b-8192`
+- `llama3-70b-8192`
+- `mixtral-8x7b-32768`
+- `gemma-7b-it`
+- `gemma2-9b-it`
+- `llama-3-3-70b-versatile`
+- `llama-3-3-8b-instant`
+
+**Advantages**:
+- Ultra-fast inference
+- Low latency
+- Real-time application optimization
+
+### Replicate
+
+**Status**: ✅ Fully supported
+
+**Supported features**:
+- Image generation
+- Video generation
+- Audio processing
+- Custom model deployment
+
+### OpenRouter
+
+**Status**: ✅ Fully supported
+
+**Features**:
+- Aggregate multiple providers
+- Unified billing
+- Simplified access
+
+## 🎨 Media Processing Platforms
+
+### Stability AI
+
+**Status**: ✅ Fully supported
+
+**Supported models**:
+- `stable-diffusion-xl-1024-v1-0`
+- `stable-diffusion-3`
+- `stable-cascade`
+- `stable-video-diffusion`
+
+### Ideogram
+
+**Status**: ✅ Fully supported
+
+**Features**:
+- Creative image generation
+- Text rendering optimization
+- Artistic styles
+
+### Luma Labs
+
+**Status**: ✅ Fully supported
+
+**Supported features**:
+- 3D model generation
+- Image-to-3D conversion
+- Video processing
+
+## 📊 Platform Comparison
+
+| Feature | OpenAI | Anthropic | Gemini | AWS Bedrock | Azure |
+|---------|--------|-----------|--------|-------------|-------|
+| **Max Context** | 128K | 200K | 32K | 200K | 128K |
+| **Multimodal** | ✅ | ❌ | ✅ | Partial | Partial |
+| **Code Ability** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Reasoning** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Speed** | Fast | Very Fast | Very Fast | Fast | Fast |
+| **Price** | High | Medium | Low | Medium | Medium |
+| **Enterprise** | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## 🚀 How to Choose the Right Platform
+
+### 1. By Use Case
+
+**Code Generation**:
+- Best: OpenAI GPT-4o, Claude 3
+- Features: High accuracy, multi-language support
+
+**Long Document Processing**:
+- Best: Claude 3 (200K context)
+- Features: Can process entire books or codebases
+
+**Creative Writing**:
+- Best: OpenAI GPT-4o, Gemini Pro
+- Features: High creativity, diverse styles
+
+**Enterprise Applications**:
+- Best: Azure OpenAI, AWS Bedrock
+- Features: Enterprise security, data guarantees
+
+**Cost-Sensitive**:
+- Best: Gemini Pro, Llama 3
+- Features: High cost-effectiveness
+
+### 2. By Technical Requirements
+
+**Multimodal Needs**:
+- OpenAI GPT-4o
+- Google Gemini Pro Vision
+- AWS Titan Multimodal
+
+**Long Context**:
+- Anthropic Claude 3 (200K)
+- OpenAI GPT-4o (128K)
+- AWS Claude 3 (200K)
+
+**Fast Response**:
+- Groq (hardware acceleration)
+- OpenAI (optimized network)
+- Anthropic (fast models)
+
+### 3. Using PipeLLM Gateway Advantages
+
+**No Manual Selection**:
+```bash
+# Gateway auto-selects
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+**Smart Routing**:
+- Auto-select based on load
+- Route based on model availability
+- Optimize based on cost
+
+**Failover**:
+- Auto-switch if provider unavailable
+- Ensure service continuity
+- Reduce downtime risk
+
+## 🛠️ Advanced Configuration
+
+### 1. Specify Provider Preference
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Preferred-Provider: openai" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+### 2. Force Specific Provider
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Force-Provider: anthropic" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+### 3. Model Aliases
+```json
+{
+  "model": "best",        // Best quality
+  "model": "fast",        // Fastest
+  "model": "cheap",       // Most economical
+  "model": "balanced"     // Balanced performance
+}
+```
+
+### 4. Region Selection
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Region: us-east-1" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+## 📈 Performance Monitoring
+
+Monitor via management dashboard:
+- Success rate comparison across providers
+- Average response time
+- Cost analysis
+- Model usage statistics
+
+## 🤝 Support
+
+If you need platform support or encounter issues:
+1. **Check documentation**: Visit provider's official docs
+2. **Enable debug mode**: Use `X-Debug: true` to view details
+3. **Contact support**: Email support@pipellm.com
+
+---
+
+**Tip**: PipeLLM Gateway continuously adds support for new platforms and models. Stay updated!
