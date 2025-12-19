@@ -1,0 +1,63 @@
+---
+title: "API 参考"
+description: "PipeLLM 网关的官方 API 参考文档"
+i18n: "zh"
+---
+
+# API 参考
+
+PipeLLM 网关的官方 API 参考文档。
+
+## 📚 概述
+
+PipeLLM 网关支持所有官方 API 端点：
+
+- `/v1/chat/completions` - 聊天补全
+- `/v1/completions` - 文本补全
+- `/v1/embeddings` - 向量嵌入
+- `/v1/audio/transcriptions` - 语音转文本
+- `/v1/images/generations` - 图像生成
+
+## 🔐 认证
+
+所有端点都使用 Bearer token 认证：
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"model": "gpt-4", "messages": [...]}'
+     https://api.pipellm.com/v1/chat/completions
+```
+
+## 📊 速率限制
+
+- **标准**：1000 请求/分钟
+- **企业**：可自定义限制
+- **突发**：最多 100 并发请求
+
+## 🚨 错误代码
+
+| 代码 | 错误 | 描述 |
+|------|------|------|
+| 401 | Unauthorized | 无效或缺失的 API 密钥 |
+| 429 | Too Many Requests | 超出速率限制 |
+| 502 | Bad Gateway | 上游服务错误 |
+| 503 | Service Unavailable | 服务暂时不可用 |
+
+## 📝 下一步
+
+<Columns cols={2}>
+  <Card title="网关特性" icon="gateway" href="/api-reference/gateway-introduction">
+    了解 PipeLLM 网关的核心功能。
+  </Card>
+
+  <Card title="端点示例" icon="list" href="/api-reference/endpoint">
+    查看实用的 API 示例。
+  </Card>
+</Columns>
+
+## 🤝 支持
+
+有关 API 相关问题：
+- **邮箱**：support@pipellm.com
+- **控制台**：https://console.pipellm.com

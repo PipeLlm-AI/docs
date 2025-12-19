@@ -1,10 +1,10 @@
 ---
-title: "PipeLLM Gateway API"
-description: "High-performance LLM API gateway with format conversion and unified access"
-i18n: "en"
+title: "PipeLLM 网关 API"
+description: "支持格式转换和统一访问的高性能 LLM API 网关"
+i18n: "zh"
 ---
 
-## SDK Examples
+## SDK 示例
 
 ### OpenAI SDK
 
@@ -17,7 +17,7 @@ client = OpenAI(
     base_url="https://api.pipellm.com/v1"
 )
 
-# Chat completions
+# 聊天补全
 response = client.chat.completions.create(
     model="gpt-4",
     messages=[
@@ -27,7 +27,7 @@ response = client.chat.completions.create(
 )
 print(response.choices[0].message.content)
 
-# Text completions
+# 文本补全
 response = client.completions.create(
     model="gpt-3.5-turbo-instruct",
     prompt="Once upon a time",
@@ -35,14 +35,14 @@ response = client.completions.create(
 )
 print(response.choices[0].text)
 
-# Embeddings
+# 嵌入
 response = client.embeddings.create(
     model="text-embedding-ada-002",
     input=["Hello world", "Foo bar"]
 )
 print(response.data[0].embedding)
 
-# Image generation
+# 图像生成
 response = client.images.generate(
     model="dall-e-3",
     prompt="A futuristic city skyline",
@@ -50,7 +50,7 @@ response = client.images.generate(
 )
 print(response.data[0].url)
 
-# Audio transcription
+# 音频转录
 with open("audio.mp3", "rb") as audio_file:
     response = client.audio.transcriptions.create(
         model="whisper-1",
@@ -70,7 +70,7 @@ client = Anthropic(
     base_url="https://api.pipellm.com/v1"
 )
 
-# Messages API
+# 消息 API
 response = client.messages.create(
     model="claude-3-sonnet",
     max_tokens=1000,
@@ -80,7 +80,7 @@ response = client.messages.create(
 )
 print(response.content[0].text)
 
-# Streaming response
+# 流式响应
 with client.messages.stream(
     model="claude-3-haiku",
     max_tokens=100,
@@ -101,14 +101,14 @@ genai.configure(
     base_url="https://api.pipellm.com/v1"
 )
 
-# Load model
+# 加载模型
 model = genai.GenerativeModel('gemini-pro')
 
-# Generate content
+# 生成内容
 response = model.generate_content("Write a Python function to calculate factorial")
 print(response.text)
 
-# Streaming response
+# 流式响应
 for chunk in model.generate_content("Tell me a story", stream=True):
     print(chunk.text, end="")
 ```
@@ -119,7 +119,7 @@ for chunk in model.generate_content("Tell me a story", stream=True):
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-# OpenAI model
+# OpenAI 模型
 llm = ChatOpenAI(
     model="gpt-4",
     api_key="your-pipellm-key",
@@ -135,7 +135,7 @@ chain = prompt | llm
 response = chain.invoke({"input": "What is AI?"})
 print(response.content)
 
-# Anthropic model
+# Anthropic 模型
 from langchain_anthropic import ChatAnthropic
 
 llm = ChatAnthropic(
@@ -148,9 +148,9 @@ response = llm.invoke("Hello, Claude!")
 print(response.content)
 ```
 
-### cURL Examples
+### cURL 示例
 
-#### Chat Completions
+#### 聊天补全
 
 ```bash
 curl https://api.pipellm.com/v1/chat/completions \
@@ -167,7 +167,7 @@ curl https://api.pipellm.com/v1/chat/completions \
   }'
 ```
 
-#### Streaming Response
+#### 流式响应
 
 ```bash
 curl https://api.pipellm.com/v1/chat/completions \
@@ -180,7 +180,7 @@ curl https://api.pipellm.com/v1/chat/completions \
   }'
 ```
 
-#### Text Completions
+#### 文本补全
 
 ```bash
 curl https://api.pipellm.com/v1/completions \
@@ -194,7 +194,7 @@ curl https://api.pipellm.com/v1/completions \
   }'
 ```
 
-#### Embeddings
+#### 嵌入
 
 ```bash
 curl https://api.pipellm.com/v1/embeddings \
@@ -206,7 +206,7 @@ curl https://api.pipellm.com/v1/embeddings \
   }'
 ```
 
-#### Image Generation
+#### 图像生成
 
 ```bash
 curl https://api.pipellm.com/v1/images/generations \
@@ -219,7 +219,7 @@ curl https://api.pipellm.com/v1/images/generations \
   }'
 ```
 
-#### Audio Transcription
+#### 音频转录
 
 ```bash
 curl https://api.pipellm.com/v1/audio/transcriptions \
@@ -229,9 +229,9 @@ curl https://api.pipellm.com/v1/audio/transcriptions \
   -F "language=en"
 ```
 
-## Authentication
+## 认证
 
-All requests require an API key:
+所有请求都需要 API 密钥：
 
 ```bash
 curl https://api.pipellm.com/v1/chat/completions \
@@ -240,11 +240,11 @@ curl https://api.pipellm.com/v1/chat/completions \
   -d '{"model":"gpt-4","messages":[{"role":"user","content":"Hello"}]}'
 ```
 
-## Error Codes
+## 错误代码
 
-| Code | Error | Description |
-|------|-------|-------------|
-| 401 | Unauthorized | Invalid or missing API key |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 502 | Bad Gateway | Upstream service error |
-| 503 | Service Unavailable | Service temporarily unavailable |
+| 代码 | 错误 | 描述 |
+|------|------|------|
+| 401 | Unauthorized | 无效或缺失的 API 密钥 |
+| 429 | Too Many Requests | 超出速率限制 |
+| 502 | Bad Gateway | 上游服务错误 |
+| 503 | Service Unavailable | 服务暂时不可用 |

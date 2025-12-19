@@ -1,0 +1,110 @@
+---
+title: "开发"
+description: "设置您的 PipeLLM 网关开发环境"
+---
+
+# 开发
+
+设置您的 PipeLLM 网关开发环境。
+
+## 🚀 快速设置
+
+<Steps>
+<Step title="安装 SDK">
+安装您首选的 LLM SDK：
+
+```bash
+# OpenAI
+pip install openai
+
+# Anthropic
+pip install anthropic
+
+# Google
+pip install google-generativeai
+```
+</Step>
+
+<Step title="配置环境">
+设置您的环境变量：
+
+```bash
+export PIPELLM_API_KEY="your-pipellm-key"
+export PIPELLM_BASE_URL="https://api.pipellm.com/v1"
+```
+</Step>
+
+<Step title="测试集成">
+测试您的设置：
+
+```python
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.getenv("PIPELLM_API_KEY"),
+    base_url=os.getenv("PIPELLM_BASE_URL")
+)
+
+response = client.messages.create(
+    model="claude-3-sonnet",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+print(response.content[0].text)
+```
+</Step>
+</Steps>
+
+## 📊 监控设置
+
+<Columns cols={2}>
+  <Card title="仪表板集成" icon="chart-line" href="/api-reference/gateway-introduction">
+    设置监控和分析。
+  </Card>
+
+  <Card title="高级配置" icon="cog" href="/api-reference/format-conversion">
+    配置高级设置。
+  </Card>
+
+  <Card title="错误处理" icon="bug" href="/api-reference/gateway-introduction#🚨-error-handling">
+    学习错误处理最佳实践。
+  </Card>
+
+  <Card title="性能调优" icon="tachometer" href="/api-reference/gateway-introduction#📊-performance-metrics">
+    优化性能设置。
+  </Card>
+</Columns>
+
+## 🔧 环境变量
+
+| 变量 | 描述 | 示例 |
+|------|------|------|
+| `PIPELLM_API_KEY` | 您的 API 密钥 | `sk-...` |
+| `PIPELLM_BASE_URL` | 网关 URL | `https://api.pipellm.com/v1` |
+| `PIPELLM_PROVIDER` | 首选提供商 | `openai`、`anthropic`、`google` |
+
+## 🧪 测试
+
+使用我们的测试端点验证您的设置：
+
+```bash
+# 测试连接
+curl -H "Authorization: Bearer $PIPELLM_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"model": "auto", "messages": [{"role": "user", "content": "test"}]}' \
+     https://api.pipellm.com/v1/chat/completions
+```
+
+## 📚 下一步
+
+- [网关特性](/api-reference/gateway-introduction)
+- [协议转换](/api-reference/format-conversion)
+- [支持的平台](/api-reference/supported-platforms)
+- [API 参考](/api-reference/introduction)
+
+## 💡 实用技巧
+
+- 使用环境变量进行配置
+- 实现带指数退避的重试逻辑
+- 通过管理仪表板监控使用情况
+- 为高错误率设置告警

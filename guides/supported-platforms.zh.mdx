@@ -1,0 +1,390 @@
+---
+title: "支持的 LLM 平台"
+description: "PipeLLM 网关支持的所有 LLM 服务提供商及其功能"
+i18n: "zh"
+---
+
+# 支持的 LLM 平台
+
+PipeLLM 网关支持主流的 LLM 服务提供商。**最大优势**：使用官方 SDK（Anthropic、OpenAI、Google 等），只需更改 baseURL 即可透明地访问任何平台。
+
+**无需学习新 API，零代码更改！**
+
+**完整模型列表**：[https://www.pipellm.com/models](https://www.pipellm.com/models)
+
+## 🤖 OpenAI 生态系统
+
+### OpenAI 官方
+**状态**：✅ 完全支持
+
+**使用方法**：使用 OpenAI 官方 SDK
+```python
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # 指向我们的网关
+)
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**支持的模型**：
+- **GPT-4 系列**：`gpt-4`、`gpt-4-turbo`、`gpt-4o`、`gpt-4o-mini`
+- **GPT-3.5 系列**：`gpt-3.5-turbo`、`gpt-3.5-turbo-16k`
+- **嵌入模型**：`text-embedding-ada-002`、`text-embedding-3-small`、`text-embedding-3-large`
+- **语音**：`whisper-1`
+- **图像**：`dall-e-3`、`dall-e-2`
+
+### Azure OpenAI
+**状态**：✅ 完全支持
+
+**使用方法**：使用 OpenAI SDK，透明调用 Azure 服务
+```python
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # 指向我们的网关
+)
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**支持的模型**：
+- **GPT-4 系列**：`gpt-4`、`gpt-4-32k`、`gpt-4-turbo`、`gpt-4o`
+- **GPT-3.5 系列**：`gpt-35-turbo`、`gpt-35-turbo-16k`
+- **嵌入模型**：`text-embedding-ada-002`
+
+## 🦙 Anthropic Claude
+**状态**：✅ 完全支持
+
+**使用方法**：使用 Anthropic 官方 SDK
+```python
+from anthropic import Anthropic
+client = Anthropic(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # 指向我们的网关
+)
+
+response = client.messages.create(
+    model="claude-3-sonnet",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+```
+
+**支持的模型**：
+- **Claude 3 系列**：
+  - `claude-3-haiku` - 快速、经济
+  - `claude-3-sonnet` - 平衡性能
+  - `claude-3-opus` - 最高质量
+  - `claude-3-5-sonnet` - 最新版本
+
+**Claude 特性**：
+- 长上下文处理（支持 200K tokens）
+- 出色的推理和分析能力
+- 强大的指令遵循
+- 工具使用支持
+
+**透明跨平台调用**：
+| 您的 SDK | 实际平台 | 说明 |
+|---------|---------|------|
+| Anthropic SDK | AWS Bedrock | 自动转换为 Bedrock 协议 |
+| Anthropic SDK | Google Vertex | 自动转换为 Vertex 协议 |
+| Anthropic SDK | Azure | 自动转换为 Azure 协议 |
+| Anthropic SDK | Anthropic 官方 | 直接调用 |
+
+## 🤖 Google Gemini
+**状态**：✅ 完全支持
+
+**使用方法**：使用 Google 的原生库或标准 API
+```python
+import requests
+
+headers = {
+    "Authorization": f"Bearer your-pipellm-key",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "model": "gemini-pro",
+    "contents": [{"role": "user", "parts": [{"text": "Hello"}]}]
+}
+
+response = requests.post(
+    "https://api.pipellm.com/v1/chat/completions",
+    headers=headers,
+    json=data
+)
+```
+
+**支持的模型**：
+- `gemini-pro` - 通用模型
+- `gemini-pro-vision` - 多模态模型
+- `gemini-ultra` - 高级模型（如果可用）
+
+**Gemini 特性**：
+- 多模态能力（文本 + 图像）
+- 代码生成优化
+- 快速响应
+- Google 生态系统集成
+
+## ☁️ AWS Bedrock
+**状态**：✅ 完全支持
+
+**使用方法**：使用原生 SDK 调用 Bedrock 服务
+```python
+# 使用 Anthropic SDK 调用 Bedrock 上的 Claude
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"  # 指向我们的网关
+)
+
+response = client.messages.create(
+    model="anthropic.claude-3-sonnet-20240229-v1:0",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+
+# 使用 OpenAI SDK 调用 Bedrock 上的 Llama 3
+import openai
+client = openai.OpenAI(
+    api_key="your-pipellm-key",
+    base_url="https://api.pipellm.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="meta.llama3-70b-instruct-v1:0",
+    messages=[{"role": "user", "content": "Write a React component"}]
+)
+```
+
+**支持的模型**：
+- **Anthropic**：`claude-3-haiku`、`claude-3-sonnet`、`claude-3-opus`
+- **Amazon Titan**：`amazon.titan-text-express-v1`、`amazon.titan-text-lite-v1`
+- **AI21 Labs**：`ai21.j2-mid`、`ai21.j2-ultra`
+- **Cohere**：`cohere.command-text-v14`、`cohere.command-light-text-v14`
+- **Meta**：`meta.llama3-8b-instruct`、`meta.llama3-70b-instruct`、`meta.llama3-1-8b-instruct`、`meta.llama3-1-70b-instruct`、`meta.llama3-2-11b-vision`、`meta.llama3-2-90b-vision`
+- **Mistral**：`mistral.mistral-7b-instruct`、`mistral.mixtral-8x7b-instruct`、`mistral.mistral-large-latest`、`mistral.mistral-small-latest`
+- **Stability AI**：`stability.stable-diffusion-xl-v1-0`
+
+**Bedrock 优势**：
+- AWS 原生集成
+- 企业级安全性
+- 可扩展性
+- 按需付费
+
+## 🌐 其他云平台
+
+### Google Vertex AI
+**状态**：✅ 完全支持
+
+### Fireworks AI
+**状态**：✅ 完全支持
+
+**支持的模型**：
+- `accounts/fireworks/models/firefunction-v2`
+- `accounts/fireworks/models/llama-v3p1-405b`
+- `accounts/fireworks/models/llama-v3p1-70b`
+- `accounts/fireworks/models/llama-v3p1-8b`
+- `accounts/stabilityai/models/stable-diffusion-xl-1024-v1-0`
+- 其他 Fireworks 模型
+
+### Together AI
+**状态**：✅ 完全支持
+
+**支持的模型**：
+- `Nous-Hermes-2-Mixtral-8x7B-DPO`
+- `Llama-3-8b-SFT`
+- `CodeLlama-34b`
+- `WizardLM-2-8x22b`
+- 其他 Together AI 模型
+
+### Groq
+**状态**：✅ 完全支持
+
+**支持的模型**：
+- `llama3-8b-8192`
+- `llama3-70b-8192`
+- `mixtral-8x7b-32768`
+- `gemma-7b-it`
+- `gemma2-9b-it`
+- `llama-3-3-70b-versatile`
+- `llama-3-3-8b-instant`
+
+**优势**：
+- 超快推理
+- 低延迟
+- 实时应用优化
+
+### Replicate
+**状态**：✅ 完全支持
+
+**支持的功能**：
+- 图像生成
+- 视频生成
+- 音频处理
+- 自定义模型部署
+
+### OpenRouter
+**状态**：✅ 完全支持
+
+**特性**：
+- 聚合多个提供商
+- 统一计费
+- 简化访问
+
+## 🎨 媒体处理平台
+
+### Stability AI
+**状态**：✅ 完全支持
+
+**支持的模型**：
+- `stable-diffusion-xl-1024-v1-0`
+- `stable-diffusion-3`
+- `stable-cascade`
+- `stable-video-diffusion`
+
+### Ideogram
+**状态**：✅ 完全支持
+
+**特性**：
+- 创意图像生成
+- 文本渲染优化
+- 艺术风格
+
+### Luma Labs
+**状态**：✅ 完全支持
+
+**支持的功能**：
+- 3D 模型生成
+- 图像到 3D 转换
+- 视频处理
+
+## 📊 平台对比
+
+| 特性 | OpenAI | Anthropic | Gemini | AWS Bedrock | Azure |
+|------|--------|-----------|--------|-------------|-------|
+| **最大上下文** | 128K | 200K | 32K | 200K | 128K |
+| **多模态** | ✅ | ❌ | ✅ | 部分 | 部分 |
+| **代码能力** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **推理** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **速度** | 快速 | 非常快速 | 非常快速 | 快速 | 快速 |
+| **价格** | 高 | 中等 | 低 | 中等 | 中等 |
+| **企业级** | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## 🚀 如何选择合适的平台
+
+### 1. 按用例
+**代码生成**：
+- 最佳：OpenAI GPT-4o、Claude 3
+- 特性：高准确性、多语言支持
+
+**长文档处理**：
+- 最佳：Claude 3（200K 上下文）
+- 特性：可处理整本书或代码库
+
+**创意写作**：
+- 最佳：OpenAI GPT-4o、Gemini Pro
+- 特性：高创意性、多样化风格
+
+**企业应用**：
+- 最佳：Azure OpenAI、AWS Bedrock
+- 特性：企业级安全、数据保证
+
+**成本敏感**：
+- 最佳：Gemini Pro、Llama 3
+- 特性：高性价比
+
+### 2. 按技术要求
+**多模态需求**：
+- OpenAI GPT-4o
+- Google Gemini Pro Vision
+- AWS Titan Multimodal
+
+**长上下文**：
+- Anthropic Claude 3（200K）
+- OpenAI GPT-4o（128K）
+- AWS Claude 3（200K）
+
+**快速响应**：
+- Groq（硬件加速）
+- OpenAI（优化网络）
+- Anthropic（快速模型）
+
+### 3. 使用 PipeLLM 网关的优势
+**无需手动选择**：
+```bash
+# 网关自动选择
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+**智能路由**：
+- 基于负载自动选择
+- 基于模型可用性路由
+- 基于成本优化
+
+**故障转移**：
+- 提供商不可用时自动切换
+- 确保服务连续性
+- 减少停机风险
+
+## 🛠️ 高级配置
+
+### 1. 指定提供商偏好
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Preferred-Provider: openai" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+### 2. 强制指定提供商
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Force-Provider: anthropic" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+### 3. 模型别名
+```json
+{
+  "model": "best",        // 最佳质量
+  "model": "fast",        // 最快速度
+  "model": "cheap",       // 最经济
+  "model": "balanced"     // 平衡性能
+}
+```
+
+### 4. 区域选择
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Region: us-east-1" \
+  -d '{"model": "auto", "messages": [...]}'
+```
+
+## 📈 性能监控
+通过管理仪表板监控：
+- 提供商成功率对比
+- 平均响应时间
+- 成本分析
+- 模型使用统计
+
+## 🤝 支持
+如果需要平台支持或遇到问题：
+1. **查看文档**：访问提供商的官方文档
+2. **启用调试模式**：使用 `X-Debug: true` 查看详情
+3. **联系支持**：发送邮件至 support@pipellm.com
+
+---
+
+**提示**：PipeLLM 网关持续添加对新平台和模型的支持。请关注更新！

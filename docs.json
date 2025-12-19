@@ -8,69 +8,131 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
+  "search": {
+    "enabled": true,
+    "provider": "algolia",
+    "algolia": {
+      "applicationId": "YOUR_APPLICATION_ID",
+      "indexName": "pipellm-docs",
+      "apiKey": "YOUR_SEARCH_API_KEY"
+    }
+  },
+  "aiChat": {
+    "enabled": true,
+    "provider": "anthropic",
+    "anthropic": {
+      "apiKey": "YOUR_ANTHROPIC_API_KEY",
+      "model": "claude-3-sonnet",
+      "systemPrompt": "You are an AI assistant that helps developers with PipeLLM Gateway documentation. Only answer questions related to the documentation content."
+    }
+  },
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": "Quick Start",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Quick Start",
+                "pages": [
+                  "index",
+                  "quickstart",
+                  "development"
+                ]
+              },
+              {
+                "group": "Gateway Features",
+                "pages": [
+                  "guides/format-conversion",
+                  "guides/supported-platforms",
+                  "guides/search-ai-setup"
+                ]
+              }
             ]
           },
           {
-            "group": "Gateway Features",
-            "pages": [
-              "guides/format-conversion",
-              "guides/supported-platforms"
+            "tab": "API Reference",
+            "groups": [
+              {
+                "group": "PipeLLM Gateway",
+                "pages": [
+                  "api-reference/gateway-introduction"
+                ]
+              },
+              {
+                "group": "Official API",
+                "pages": [
+                  "api-reference/introduction"
+                ]
+              },
+              {
+                "group": "Endpoint Examples",
+                "pages": [
+                  "api-reference/endpoint/get",
+                  "api-reference/endpoint/create",
+                  "api-reference/endpoint/delete",
+                  "api-reference/endpoint/webhook"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API Reference",
-        "groups": [
+        "language": "zh",
+        "tabs": [
           {
-            "group": "PipeLLM Gateway",
-            "pages": [
-              "api-reference/gateway-introduction"
+            "tab": "指南",
+            "groups": [
+              {
+                "group": "快速开始",
+                "pages": [
+                  "index.zh",
+                  "quickstart.zh",
+                  "development.zh"
+                ]
+              },
+              {
+                "group": "网关功能",
+                "pages": [
+                  "guides/format-conversion.zh",
+                  "guides/supported-platforms.zh",
+                  "guides/search-ai-setup.zh"
+                ]
+              }
             ]
           },
           {
-            "group": "Official API",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+            "tab": "API 参考",
+            "groups": [
+              {
+                "group": "PipeLLM 网关",
+                "pages": [
+                  "api-reference/gateway-introduction.zh"
+                ]
+              },
+              {
+                "group": "官方 API",
+                "pages": [
+                  "api-reference/introduction.zh"
+                ]
+              },
+              {
+                "group": "端点示例",
+                "pages": [
+                  "api-reference/endpoint/get",
+                  "api-reference/endpoint/create",
+                  "api-reference/endpoint/delete",
+                  "api-reference/endpoint/webhook"
+                ]
+              }
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://docs.pipellm.com",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://blog.pipellm.com",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

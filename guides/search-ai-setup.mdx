@@ -1,0 +1,285 @@
+---
+title: "Search and AI Chat Setup"
+description: "Configure search functionality and AI chat for your documentation"
+i18n: "en"
+---
+
+# Search and AI Chat Setup
+
+This guide explains how to set up search functionality and AI chat for your PipeLLM Gateway documentation.
+
+## 🔍 Search Configuration
+
+### Option 1: Algolia (Recommended)
+
+1. **Create Algolia Account**
+   - Sign up at [Algolia](https://www.algolia.com/)
+   - Create a new index (e.g., `pipellm-docs`)
+
+2. **Update `docs.json`**
+```json
+{
+  "search": {
+    "enabled": true,
+    "provider": "algolia",
+    "algolia": {
+      "applicationId": "YOUR_APPLICATION_ID",
+      "indexName": "pipellm-docs",
+      "apiKey": "YOUR_SEARCH_ONLY_API_KEY"
+    }
+  }
+}
+```
+
+3. **Index Your Documentation**
+   - Mintlify automatically indexes your content
+   - Search updates typically take a few minutes
+
+### Option 2: Google Custom Search
+
+```json
+{
+  "search": {
+    "enabled": true,
+    "provider": "google",
+    "google": {
+      "customSearchId": "YOUR_CUSTOM_SEARCH_ID",
+      "apiKey": "YOUR_API_KEY"
+    }
+  }
+}
+```
+
+### Option 3: Local Search
+
+```json
+{
+  "search": {
+    "enabled": true,
+    "provider": "local"
+  }
+}
+```
+
+## 🤖 AI Chat Configuration
+
+### Option 1: Anthropic Claude (Recommended)
+
+1. **Get API Key**
+   - Sign up at [Anthropic Console](https://console.anthropic.com/)
+   - Create an API key
+
+2. **Update `docs.json`**
+```json
+{
+  "aiChat": {
+    "enabled": true,
+    "provider": "anthropic",
+    "anthropic": {
+      "apiKey": "your-anthropic-api-key",
+      "model": "claude-3-sonnet",
+      "systemPrompt": "You are an AI assistant that helps developers with PipeLLM Gateway documentation. Only answer questions related to the documentation content."
+    }
+  }
+}
+```
+
+### Option 2: OpenAI GPT
+
+```json
+{
+  "aiChat": {
+    "enabled": true,
+    "provider": "openai",
+    "openai": {
+      "apiKey": "your-openai-api-key",
+      "model": "gpt-4",
+      "systemPrompt": "You are an AI assistant that helps developers with PipeLLM Gateway documentation."
+    }
+  }
+}
+```
+
+### Option 3: Google Gemini
+
+```json
+{
+  "aiChat": {
+    "enabled": true,
+    "provider": "google",
+    "google": {
+      "apiKey": "your-gemini-api-key",
+      "model": "gemini-pro",
+      "systemPrompt": "You are an AI assistant that helps developers with PipeLLM Gateway documentation."
+    }
+  }
+}
+```
+
+## ⚙️ Environment Variables
+
+For security, store API keys in environment variables:
+
+### Create `.env.local` file
+```bash
+# Search
+NEXT_PUBLIC_ALGOLIA_APP_ID=your_application_id
+NEXT_PUBLIC_ALGOLIA_SEARCH_KEY=your_search_only_key
+NEXT_PUBLIC_ALGOLIA_INDEX_NAME=pipellm-docs
+
+# AI Chat
+NEXT_PUBLIC_ANTHROPIC_API_KEY=your_anthropic_api_key
+NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key
+NEXT_PUBLIC_GOOGLE_API_KEY=your_gemini_api_key
+```
+
+### Update `docs.json` to use environment variables
+```json
+{
+  "search": {
+    "provider": "algolia",
+    "algolia": {
+      "applicationId": "${NEXT_PUBLIC_ALGOLIA_APP_ID}",
+      "apiKey": "${NEXT_PUBLIC_ALGOLIA_SEARCH_KEY}",
+      "indexName": "${NEXT_PUBLIC_ALGOLIA_INDEX_NAME}"
+    }
+  },
+  "aiChat": {
+    "provider": "anthropic",
+    "anthropic": {
+      "apiKey": "${NEXT_PUBLIC_ANTHROPIC_API_KEY}",
+      "model": "claude-3-sonnet"
+    }
+  }
+}
+```
+
+## 🚀 Deployment Considerations
+
+### Vercel Deployment
+
+1. **Add Environment Variables**
+   - In Vercel Dashboard, go to Settings → Environment Variables
+   - Add all required API keys
+
+2. **Build Configuration**
+```json
+{
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_ALGOLIA_APP_ID": "${NEXT_PUBLIC_ALGOLIA_APP_ID}",
+      "NEXT_PUBLIC_ALGOLIA_SEARCH_KEY": "${NEXT_PUBLIC_ALGOLIA_SEARCH_KEY}",
+      "NEXT_PUBLIC_ANTHROPIC_API_KEY": "${NEXT_PUBLIC_ANTHROPIC_API_KEY}"
+    }
+  }
+}
+```
+
+### Mintlify Deployment
+
+1. **Add Environment Variables**
+   - In Mintlify Console, go to Settings → Environment Variables
+   - Add required API keys
+
+2. **Automatic Indexing**
+   - Mintlify automatically handles search indexing
+   - AI chat configuration is processed during build
+
+## 🎨 Customization
+
+### Search Styling
+```json
+{
+  "search": {
+    "theme": {
+      "primaryColor": "#16A34A",
+      "borderRadius": "8px",
+      "highlightColor": "#07C983"
+    }
+  }
+}
+```
+
+### AI Chat Widget
+```json
+{
+  "aiChat": {
+    "theme": {
+      "position": "right",
+      "bubbleColor": "#16A34A",
+      "textColor": "#FFFFFF"
+    },
+    "branding": {
+      "title": "PipeLLM Docs Assistant",
+      "subtitle": "Ask me anything about PipeLLM Gateway",
+      "logo": "/logo/chat-icon.svg"
+    }
+  }
+}
+```
+
+## 🔧 Troubleshooting
+
+### Search Issues
+
+1. **Search not working**
+   - Check API keys are correct
+   - Verify index exists and is populated
+   - Check browser console for errors
+
+2. **Indexing problems**
+   - Wait 5-10 minutes for indexing to complete
+   - Check Algolia dashboard for indexing status
+   - Re-deploy if needed
+
+### AI Chat Issues
+
+1. **Chat not responding**
+   - Verify API key is valid
+   - Check rate limits on your API provider
+   - Ensure model name is correct
+
+2. **Poor responses**
+   - Adjust system prompt
+   - Try different model (e.g., gpt-4 vs gpt-3.5-turbo)
+   - Check prompt length limits
+
+## 📊 Monitoring and Analytics
+
+### Search Analytics
+- **Algolia**: Built-in analytics dashboard
+- **Google**: Search Console integration
+- **Local**: Basic usage statistics
+
+### AI Chat Analytics
+- Track usage patterns
+- Monitor response quality
+- Set up alerts for high usage
+
+## 🛡️ Security Best Practices
+
+1. **API Key Security**
+   - Never commit API keys to version control
+   - Use environment variables
+   - Set up API key restrictions where possible
+
+2. **Rate Limiting**
+   - Configure appropriate rate limits
+   - Monitor usage patterns
+   - Set up alerts for unusual activity
+
+3. **Content Safety**
+   - Use appropriate system prompts
+   - Implement content filtering
+   - Monitor for inappropriate usage
+
+## 📝 Next Steps
+
+1. Test search functionality
+2. Test AI chat responses
+3. Monitor usage and performance
+4. Optimize based on user feedback
+
+---
+
+**Need help?** Contact support@pipellm.com for assistance with search and AI chat setup.
