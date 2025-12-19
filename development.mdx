@@ -1,0 +1,110 @@
+---
+title: 'Development'
+description: 'Set up your PipeLLM Gateway development environment'
+---
+
+# Development
+
+Set up your PipeLLM Gateway development environment.
+
+## 🚀 Quick Setup
+
+<Steps>
+<Step title="Install SDKs">
+Install your preferred LLM SDKs:
+
+```bash
+# For OpenAI
+pip install openai
+
+# For Anthropic
+pip install anthropic
+
+# For Google
+pip install google-generativeai
+```
+</Step>
+
+<Step title="Configure Environment">
+Set up your environment variables:
+
+```bash
+export PIPELLM_API_KEY="your-pipellm-key"
+export PIPELLM_BASE_URL="https://api.pipellm.com/v1"
+```
+</Step>
+
+<Step title="Test Integration">
+Test your setup:
+
+```python
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.getenv("PIPELLM_API_KEY"),
+    base_url=os.getenv("PIPELLM_BASE_URL")
+)
+
+response = client.messages.create(
+    model="claude-3-sonnet",
+    messages=[{"role": "user", "content": "Hello"}]
+)
+print(response.content[0].text)
+```
+</Step>
+</Steps>
+
+## 📊 Monitoring Setup
+
+<Columns cols={2}>
+  <Card title="Dashboard Integration" icon="chart-line" href="/api-reference/gateway-introduction">
+    Set up monitoring and analytics.
+  </Card>
+
+  <Card title="Advanced Configuration" icon="cog" href="/api-reference/format-conversion">
+    Configure advanced settings.
+  </Card>
+
+  <Card title="Error Handling" icon="bug" href="/api-reference/gateway-introduction#🚨-error-handling">
+    Learn error handling best practices.
+  </Card>
+
+  <Card title="Performance Tuning" icon="tachometer" href="/api-reference/gateway-introduction#📊-performance-metrics">
+    Optimize performance settings.
+  </Card>
+</Columns>
+
+## 🔧 Environment Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `PIPELLM_API_KEY` | Your API key | `sk-...` |
+| `PIPELLM_BASE_URL` | Gateway URL | `https://api.pipellm.com/v1` |
+| `PIPELLM_PROVIDER` | Preferred provider | `openai`, `anthropic`, `google` |
+
+## 🧪 Testing
+
+Use our test endpoints to verify your setup:
+
+```bash
+# Test connection
+curl -H "Authorization: Bearer $PIPELLM_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"model": "auto", "messages": [{"role": "user", "content": "test"}]}' \
+     https://api.pipellm.com/v1/chat/completions
+```
+
+## 📚 Next Steps
+
+- [Gateway Features](/api-reference/gateway-introduction)
+- [Protocol Conversion](/api-reference/format-conversion)
+- [Supported Platforms](/api-reference/supported-platforms)
+- [API Reference](/api-reference/introduction)
+
+## 💡 Pro Tips
+
+- Use environment variables for configuration
+- Implement retry logic with exponential backoff
+- Monitor usage via the management dashboard
+- Set up alerts for high error rates
