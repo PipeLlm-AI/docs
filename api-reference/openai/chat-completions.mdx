@@ -1,0 +1,216 @@
+---
+title: "Chat Completions"
+description: "OpenAI-compatible chat completions API"
+i18n: "en"
+---
+
+For authentication and model list, see [Overview](/api-reference/openai/overview).
+
+## Endpoint
+
+```
+POST https://api.pipellm.com/v1/chat/completions
+```
+
+## Code Examples
+
+<Tabs>
+  <Tab title="cURL">
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $PIPELLM_API_KEY" \
+  -d '{
+    "model": "gpt-4o",
+    "max_completion_tokens": 1024,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Why is the sky blue?"
+      }
+    ]
+  }'
+```
+  </Tab>
+  <Tab title="Python">
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  base_url='https://api.pipellm.com/v1'
+)
+
+response = client.chat.completions.create(
+  model='gpt-4o',
+  messages=[
+    {
+      'role': 'user',
+      'content': 'Why is the sky blue?'
+    }
+  ]
+)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.PIPELLM_API_KEY,
+  baseURL: 'https://api.pipellm.com/v1'
+});
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [
+    {
+      role: 'user',
+      content: 'Why is the sky blue?'
+    }
+  ]
+});
+```
+  </Tab>
+  <Tab title="Go">
+```go
+package main
+
+import (
+  "context"
+  "os"
+  openai "github.com/sashabaranov/go-openai"
+)
+
+func main() {
+  config := openai.DefaultConfig(os.Getenv("PIPELLM_API_KEY"))
+  config.BaseURL = "https://api.pipellm.com/v1"
+  client := openai.NewClientWithConfig(config)
+
+  resp, _ := client.CreateChatCompletion(
+    context.Background(),
+    openai.ChatCompletionRequest{
+      Model: "gpt-4o",
+      Messages: []openai.ChatCompletionMessage{
+        {
+          Role:    openai.ChatMessageRoleUser,
+          Content: "Why is the sky blue?",
+        },
+      },
+    },
+  )
+}
+```
+  </Tab>
+</Tabs>
+
+## Request Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `model` | string | Yes | Model ID (e.g., `gpt-4o`, `grok-2`) |
+| `messages` | array | Yes | Array of message objects |
+| `max_tokens` | integer | No | Maximum tokens to generate |
+| `temperature` | number | No | Sampling temperature (0-2) |
+| `stream` | boolean | No | Enable streaming response |
+
+## Response Format
+
+```json
+{
+  "id": "chatcmpl-xxx",
+  "object": "chat.completion",
+  "created": 1234567890,
+  "model": "gpt-4o",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The sky appears blue because..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 50,
+    "total_tokens": 60
+  }
+}
+```
+
+## Function Calling
+
+Function Calling allows models to generate structured JSON to call functions in your code.
+
+<Tabs>
+  <Tab title="Python">
+```python
+tools = [
+  {
+    "type": "function",
+    "function": {
+      "name": "get_weather",
+      "description": "Get the current weather in a location",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {"type": "string", "description": "City name"}
+        },
+        "required": ["location"]
+      }
+    }
+  }
+]
+
+response = client.chat.completions.create(
+  model="gpt-4.1",
+  messages=[{"role": "user", "content": "What's the weather in Tokyo?"}],
+  tools=tools,
+  tool_choice="auto"
+)
+
+if response.choices[0].message.tool_calls:
+  tool_call = response.choices[0].message.tool_calls[0]
+  # Execute your function and return result
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+const tools = [
+  {
+    type: "function",
+    function: {
+      name: "get_weather",
+      description: "Get the current weather in a location",
+      parameters: {
+        type: "object",
+        properties: {
+          location: { type: "string", description: "City name" }
+        },
+        required: ["location"]
+      }
+    }
+  }
+];
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4.1',
+  messages: [{ role: 'user', content: "What's the weather in Tokyo?" }],
+  tools: tools,
+  tool_choice: 'auto'
+});
+
+if (response.choices[0].message.tool_calls) {
+  const toolCall = response.choices[0].message.tool_calls[0];
+  // Execute your function and return result
+}
+```
+  </Tab>
+</Tabs>
+
+<Card title="Function Calling Documentation" icon="book" href="https://platform.openai.com/docs/guides/function-calling">
+  Complete guide on defining functions and handling responses
+</Card>

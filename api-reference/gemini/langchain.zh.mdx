@@ -1,0 +1,72 @@
+---
+title: "LangChain SDK"
+description: "使用 LangChain SDK 调用 Gemini 模型"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/gemini/overview)。
+
+## 安装
+
+```bash
+pip install langchain-google-genai
+```
+
+## 代码示例
+
+<Tabs>
+  <Tab title="Python">
+```python
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(
+  model='gemini-3-flash-preview',
+  google_api_key=os.getenv('PIPELLM_API_KEY'),
+  transport='rest',
+  client_options={'api_endpoint': 'https://api.pipellm.com'}
+)
+
+response = llm.invoke([
+  ('user', 'Why is the sky blue?')
+])
+
+print(response.content)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const llm = new ChatGoogleGenerativeAI({
+  model: 'gemini-3-flash-preview',
+  apiKey: process.env.PIPELLM_API_KEY,
+  baseUrl: 'https://api.pipellm.com'
+});
+
+const response = await llm.invoke([
+  { role: 'user', content: 'Why is the sky blue?' }
+]);
+
+console.log(response.content);
+```
+  </Tab>
+</Tabs>
+
+## 流式响应
+
+```python
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+llm = ChatGoogleGenerativeAI(
+  model='gemini-3-flash-preview',
+  google_api_key=os.getenv('PIPELLM_API_KEY'),
+  transport='rest',
+  client_options={'api_endpoint': 'https://api.pipellm.com'},
+  streaming=True
+)
+
+for chunk in llm.stream('Tell me a story'):
+  print(chunk.content, end='', flush=True)
+```

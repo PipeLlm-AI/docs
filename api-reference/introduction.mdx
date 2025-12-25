@@ -1,63 +1,51 @@
 ---
-title: 'API Reference'
-description: 'Official API reference documentation for PipeLLM Gateway'
+title: "API Reference"
+description: "Use your favorite SDK with PipeLLM - just change the baseURL"
 i18n: "en"
 ---
 
 # API Reference
 
-Official API reference documentation for PipeLLM Gateway.
+PipeLLM Gateway supports multiple API formats. Use your familiar native SDK - just change the baseURL.
 
-## 📚 Overview
+## Quick Start
 
-PipeLLM Gateway supports all official API endpoints:
+Choose your API format:
 
-- `/v1/chat/completions` - Chat completions
-- `/v1/completions` - Text completions
-- `/v1/embeddings` - Vector embeddings
-- `/v1/audio/transcriptions` - Speech-to-text
-- `/v1/images/generations` - Image generation
+| API Format | Supported Models | Endpoint |
+|------------|------------------|----------|
+| [OpenAI Compatible](/api-reference/openai/chat-completions) | GPT, Grok, DeepSeek, Groq, etc. | `/v1/chat/completions` |
+| [Anthropic](/api-reference/anthropic/messages) | Claude series | `/v1/messages` |
+| [Gemini](/api-reference/gemini/generate-content) | Gemini series | `/v1beta/models/{model}:generateContent` |
 
-## 🔐 Authentication
+## Authentication
 
-All endpoints use Bearer token authentication:
+All requests use your PipeLLM API Key with format-specific headers:
 
-```bash
-curl -H "Authorization: Bearer YOUR_API_KEY" \
-     -H "Content-Type: application/json" \
-     -d '{"model": "gpt-4", "messages": [...]}'
-     https://api.pipellm.com/v1/chat/completions
+| API Format | Header |
+|------------|--------|
+| OpenAI Compatible | `Authorization: Bearer $PIPELLM_API_KEY` |
+| Anthropic | `x-api-key: $PIPELLM_API_KEY` |
+| Gemini | `x-goog-api-key: $PIPELLM_API_KEY` |
+
+## Base URL
+
+```
+https://api.pipellm.com
 ```
 
-## 📊 Rate Limits
+## Next Steps
 
-- **Standard**: 1000 requests/minute
-- **Enterprise**: Custom limits available
-- **Burst**: Up to 100 concurrent requests
-
-## 🚨 Error Codes
-
-| Code | Error | Description |
-|------|-------|-------------|
-| 401 | Unauthorized | Invalid or missing API key |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 502 | Bad Gateway | Upstream service error |
-| 503 | Service Unavailable | Service temporarily unavailable |
-
-## 📝 Next Steps
-
-<Columns cols={2}>
-  <Card title="Gateway Features" icon="gateway" href="/api-reference/gateway-introduction">
-    Learn about PipeLLM Gateway core capabilities.
+<Columns cols={3}>
+  <Card title="OpenAI Compatible" icon="bolt" href="/api-reference/openai/chat-completions">
+    GPT, Grok, DeepSeek, Groq and more
   </Card>
 
-  <Card title="Endpoint Examples" icon="list" href="/api-reference/endpoint">
-    View practical API examples.
+  <Card title="Anthropic" icon="message" href="/api-reference/anthropic/messages">
+    Claude series models
+  </Card>
+
+  <Card title="Gemini" icon="sparkles" href="/api-reference/gemini/generate-content">
+    Google Gemini models
   </Card>
 </Columns>
-
-## 🤝 Support
-
-For API-related questions:
-- **Email**: support@pipellm.com
-- **Console**: https://console.pipellm.com

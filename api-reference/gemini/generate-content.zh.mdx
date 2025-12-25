@@ -1,0 +1,140 @@
+---
+title: "Google GenAI SDK"
+description: "使用 Google GenAI SDK 调用 Gemini 模型"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/gemini/overview)。
+
+## 安装
+
+```bash
+pip install google-genai
+```
+
+## 代码示例
+
+<Tabs>
+  <Tab title="cURL">
+```bash
+curl "https://api.pipellm.com/v1beta/models/gemini-3-flash-preview:generateContent" \
+  -H "Content-Type: application/json" \
+  -H "x-goog-api-key: $PIPELLM_API_KEY" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          {"text": "Why is the sky blue?"}
+        ]
+      }
+    ]
+  }'
+```
+  </Tab>
+  <Tab title="Python">
+```python
+import os
+from google import genai
+
+client = genai.Client(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  http_options={'base_url': 'https://api.pipellm.com'}
+)
+
+response = client.models.generate_content(
+  model='gemini-3-flash-preview',
+  contents='Why is the sky blue?'
+)
+
+print(response.text)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.PIPELLM_API_KEY,
+  httpOptions: {
+    baseUrl: 'https://api.pipellm.com'
+  }
+});
+
+const response = await ai.models.generateContent({
+  model: 'gemini-3-flash-preview',
+  contents: 'Why is the sky blue?'
+});
+
+console.log(response.text);
+```
+  </Tab>
+  <Tab title="Go">
+```go
+package main
+
+import (
+  "context"
+  "os"
+  "github.com/google/generative-ai-go/genai"
+  "google.golang.org/api/option"
+)
+
+func main() {
+  ctx := context.Background()
+  client, _ := genai.NewClient(ctx,
+    option.WithAPIKey(os.Getenv("PIPELLM_API_KEY")),
+    option.WithEndpoint("https://api.pipellm.com"),
+  )
+  defer client.Close()
+
+  model := client.GenerativeModel("gemini-3-flash-preview")
+  resp, _ := model.GenerateContent(ctx,
+    genai.Text("Why is the sky blue?"),
+  )
+}
+```
+  </Tab>
+</Tabs>
+
+## 请求格式
+
+```json
+{
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {"text": "Your message here"}
+      ]
+    }
+  ],
+  "generationConfig": {
+    "temperature": 0.7,
+    "maxOutputTokens": 1024
+  }
+}
+```
+
+## 响应格式
+
+```json
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {"text": "The sky appears blue because..."}
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP"
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 10,
+    "candidatesTokenCount": 50,
+    "totalTokenCount": 60
+  }
+}
+```

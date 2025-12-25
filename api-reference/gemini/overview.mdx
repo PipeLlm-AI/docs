@@ -1,0 +1,60 @@
+---
+title: "Overview"
+description: "Gemini API authentication, endpoints, and supported models"
+i18n: "en"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com
+```
+
+## Authentication
+
+| Header | Value |
+|--------|-------|
+| `x-goog-api-key` | `$PIPELLM_API_KEY` |
+
+## Endpoints
+
+| Type | Endpoint |
+|------|----------|
+| Non-Streaming | `POST /v1beta/models/{model}:generateContent` |
+| Streaming | `POST /v1beta/models/{model}:streamGenerateContent` |
+
+## Supported Models
+
+**Text Models**
+- gemini-3-pro
+- gemini-3-flash
+- gemini-2.5-flash
+- gemini-2.5-flash-lite
+- gemini-2.5-pro
+- gemini-2.0-flash
+- gemini-2.0-flash-lite
+
+**Image Models (Nano Banana)**
+- gemini-3-pro-image-preview (Nano Banana Pro)
+- gemini-2.5-flash-image (Nano Banana)
+
+> [!IMPORTANT]
+> **Gemini 3 Series**: HTTP/cURL requests require request signing. See the [Gemini 3 documentation](https://ai.google.dev/gemini-api/docs/gemini-3) for details. SDK users are not affected.
+
+For the complete model list, see the [Gemini API Models documentation](https://ai.google.dev/gemini-api/docs/models).
+
+## Choose Your SDK
+
+<Columns cols={3}>
+  <Card title="Google GenAI SDK" icon="code" href="/api-reference/gemini/generate-content">
+    Official SDK, recommended
+  </Card>
+
+  <Card title="LangChain" icon="link" href="/api-reference/gemini/langchain">
+    LangChain framework integration
+  </Card>
+
+  <Card title="Nano Banana" icon="image" href="/api-reference/gemini/nano-banana">
+    Image generation
+  </Card>
+</Columns>

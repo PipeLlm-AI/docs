@@ -1,0 +1,39 @@
+---
+title: "Rate Limits"
+description: "API rate limiting based on balance"
+i18n: "en"
+---
+
+## How It Works
+
+Your rate limit is **dynamically calculated** based on your account balance:
+
+| Balance | RPM Limit |
+|---------|-----------|
+| $1 - $10 | 30 |
+| $20 | 60 |
+| $200 | 600 |
+| $600+ | 1800 (default max) |
+| Higher | Contact support |
+
+**Formula**: `RPM = Balance × 3` (minimum 30, capped at account max)
+
+## Rate Limit Response (429)
+
+```json
+{
+  "error": {
+    "type": "rate_limit_error",
+    "code": "rate_limit_exceeded",
+    "message": "Request rate limit exceeded. Please slow down."
+  }
+}
+```
+
+## Rate Limit Headers
+
+| Header | Description |
+|--------|-------------|
+| `x-ratelimit-limit-requests` | Your current RPM limit |
+| `x-ratelimit-remaining-requests` | Remaining requests |
+| `x-ratelimit-reset-requests` | Time until reset |

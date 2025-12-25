@@ -1,0 +1,60 @@
+---
+title: "Claude Code"
+description: "配置 Claude Code 使用 PipeLLM API"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/anthropic/overview)。
+
+## 什么是 Claude Code
+
+Claude Code 是 Anthropic 官方的 AI 编程助手，可在终端和 IDE 中使用。你可以配置它使用 PipeLLM 作为 API 端点。
+
+## 配置方法
+
+### 终端
+
+在环境变量中设置 API 地址：
+
+```bash
+export ANTHROPIC_API_KEY="your-pipellm-api-key"
+export ANTHROPIC_BASE_URL="https://api.pipellm.com"
+```
+
+然后正常运行 Claude Code：
+
+```bash
+claude
+```
+
+### VS Code
+
+1. 打开 VS Code 设置（JSON）
+2. 添加以下配置：
+
+```json
+{
+  "claude.apiKey": "your-pipellm-api-key",
+  "claude.apiBaseUrl": "https://api.pipellm.com"
+}
+```
+
+### JetBrains IDEs
+
+1. 打开 `Settings` → `Tools` → `Claude`
+2. 设置 **API Key**：你的 PipeLLM API Key
+3. 设置 **API Base URL**：`https://api.pipellm.com`
+
+## 支持的模型
+
+Claude Code 支持 PipeLLM 的所有 Claude 模型：
+
+- `claude-3-7-sonnet-latest`（推荐）
+- `claude-sonnet-4-5-latest`
+- `claude-3-5-haiku-latest`
+
+## 更多资源
+
+<Card title="Claude Code 官方文档" icon="book" href="https://docs.anthropic.com/en/docs/claude-code">
+  官方 Claude Code 设置和使用指南
+</Card>

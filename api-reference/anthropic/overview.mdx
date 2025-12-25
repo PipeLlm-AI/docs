@@ -1,0 +1,62 @@
+---
+title: "Overview"
+description: "Anthropic API authentication, endpoints, and supported models"
+i18n: "en"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com
+```
+
+## Authentication
+
+| Header | Value |
+|--------|-------|
+| `x-api-key` | `$PIPELLM_API_KEY` |
+| `anthropic-version` | `2023-06-01` |
+
+## Endpoints
+
+| Type | Endpoint |
+|------|----------|
+| Messages | `POST /v1/messages` |
+| Streaming | `POST /v1/messages` (with `stream: true`) |
+
+## Supported Models
+
+**Claude Sonnet 4.5** (Latest, recommended)
+- `claude-sonnet-4-5-20250929` / `claude-sonnet-4-5-latest`
+  - Best for complex agents and coding
+  - 200K context window
+
+**Claude Haiku 4.5**
+- `claude-haiku-4-5-20251015` / `claude-haiku-4-5-latest`
+  - Fastest and most cost-effective
+
+**Claude 3.7 Series**
+- `claude-3-7-sonnet-20250219` / `claude-3-7-sonnet-latest`
+  - Hybrid reasoning with Extended Thinking
+
+For the complete model list, see the [Claude Models documentation](https://docs.anthropic.com/en/docs/about-claude/models).
+
+## Choose Your Integration
+
+<Columns cols={2}>
+  <Card title="Anthropic SDK" icon="code" href="/api-reference/anthropic/messages">
+    Official SDK, recommended
+  </Card>
+
+  <Card title="Tool Use" icon="wrench" href="/api-reference/anthropic/tool-use">
+    Function calling
+  </Card>
+
+  <Card title="LangChain" icon="link" href="/api-reference/anthropic/langchain">
+    LangChain framework
+  </Card>
+
+  <Card title="Claude Code" icon="terminal" href="/api-reference/anthropic/claude-code">
+    IDE integration
+  </Card>
+</Columns>

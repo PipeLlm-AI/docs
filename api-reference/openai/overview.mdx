@@ -1,0 +1,57 @@
+---
+title: "Overview"
+description: "OpenAI Compatible API authentication, endpoints, and supported models"
+i18n: "en"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com/v1
+```
+
+## Authentication
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer $PIPELLM_API_KEY` |
+
+## Endpoints
+
+| Type | Endpoint |
+|------|----------|
+| Chat Completions | `POST /v1/chat/completions` |
+
+## Supported Models
+
+**OpenAI**
+- `gpt-4.1` / `gpt-4.1-mini` (latest)
+- `gpt-4o` / `gpt-4o-mini`
+- `o3` / `o4-mini` / `o4-mini-high` (reasoning models)
+
+**Grok (xAI)**
+- `grok-3` (latest)
+- `grok-2` / `grok-2-mini`
+
+**DeepSeek**
+- `deepseek-chat`
+- `deepseek-coder`
+- `deepseek-reasoner`
+
+**Groq**
+- `llama-3.1-70b-versatile`
+- `mixtral-8x7b-32768`
+
+For the complete model list, see the [OpenAI Models documentation](https://platform.openai.com/docs/models).
+
+## Choose Your Integration
+
+<Columns cols={2}>
+  <Card title="Chat Completions" icon="comments" href="/api-reference/openai/chat-completions">
+    OpenAI SDK including Function Calling
+  </Card>
+
+  <Card title="LangChain SDK" icon="link" href="/api-reference/openai/langchain">
+    LangChain framework
+  </Card>
+</Columns>

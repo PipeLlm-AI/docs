@@ -1,0 +1,94 @@
+---
+title: "LangChain SDK"
+description: "Use LangChain SDK to call Claude models"
+i18n: "en"
+---
+
+For authentication and model list, see [Overview](/api-reference/anthropic/overview).
+
+## Installation
+
+```bash
+pip install langchain-anthropic
+```
+
+## Code Examples
+
+<Tabs>
+  <Tab title="Python">
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com'
+)
+
+response = llm.invoke([
+  ('user', 'Why is the sky blue?')
+])
+
+print(response.content)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { ChatAnthropic } from '@langchain/anthropic';
+
+const llm = new ChatAnthropic({
+  model: 'claude-sonnet-4-5-20250929',
+  anthropicApiKey: process.env.PIPELLM_API_KEY,
+  anthropicApiUrl: 'https://api.pipellm.com'
+});
+
+const response = await llm.invoke([
+  { role: 'user', content: 'Why is the sky blue?' }
+]);
+
+console.log(response.content);
+```
+  </Tab>
+</Tabs>
+
+## Streaming
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com',
+  streaming=True
+)
+
+for chunk in llm.stream('Tell me a story'):
+  print(chunk.content, end='', flush=True)
+```
+
+## Function Calling
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+from langchain_core.tools import tool
+
+@tool
+def get_weather(location: str) -> str:
+  """Get the weather for a location."""
+  return f"Weather in {location}: 22°C, Sunny"
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com'
+)
+
+llm_with_tools = llm.bind_tools([get_weather])
+response = llm_with_tools.invoke("What's the weather in Tokyo?")
+
+print(response.tool_calls)
+```

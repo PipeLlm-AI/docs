@@ -1,0 +1,165 @@
+---
+title: "Tool Use"
+description: "Claude 函数调用和工具使用"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/anthropic/overview)。
+
+## 什么是 Tool Use
+
+Tool Use（也叫函数调用）允许 Claude 与外部工具、API 和数据源交互。Claude 不会直接执行工具——它会生成结构化的请求，由你的应用程序执行。
+
+## 工作流程
+
+1. **定义工具** - 名称、描述和输入 schema
+2. **Claude 判断** - 是否需要使用工具
+3. **Claude 生成** - 工具调用请求（JSON）
+4. **应用执行** - 调用实际的工具
+5. **返回结果** - 将结果发回给 Claude
+6. **Claude 回复** - 生成最终答案
+
+## 基础示例
+
+<Tabs>
+  <Tab title="Python">
+```python
+import os
+import anthropic
+
+client = anthropic.Anthropic(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  base_url='https://api.pipellm.com'
+)
+
+# 定义工具
+tools = [
+  {
+    "name": "get_weather",
+    "description": "获取指定地点的当前天气",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "城市名称，如：北京"
+        }
+      },
+      "required": ["location"]
+    }
+  }
+]
+
+# 第一次调用 - Claude 决定使用工具
+response = client.messages.create(
+  model="claude-sonnet-4-5-20250929",
+  max_tokens=1024,
+  tools=tools,
+  messages=[
+    {"role": "user", "content": "东京现在天气怎么样？"}
+  ]
+)
+
+# 检查 Claude 是否要使用工具
+if response.stop_reason == "tool_use":
+  tool_use = next(b for b in response.content if b.type == "tool_use")
+  
+  # 执行你的工具（示例）
+  tool_result = {"temperature": "22°C", "condition": "晴天"}
+  
+  # 将结果返回给 Claude
+  final_response = client.messages.create(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=1024,
+    tools=tools,
+    messages=[
+      {"role": "user", "content": "东京现在天气怎么样？"},
+      {"role": "assistant", "content": response.content},
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "tool_result",
+            "tool_use_id": tool_use.id,
+            "content": str(tool_result)
+          }
+        ]
+      }
+    ]
+  )
+  
+  print(final_response.content[0].text)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.PIPELLM_API_KEY,
+  baseURL: 'https://api.pipellm.com'
+});
+
+const tools = [
+  {
+    name: "get_weather",
+    description: "获取指定地点的当前天气",
+    input_schema: {
+      type: "object",
+      properties: {
+        location: {
+          type: "string",
+          description: "城市名称，如：北京"
+        }
+      },
+      required: ["location"]
+    }
+  }
+];
+
+const response = await client.messages.create({
+  model: 'claude-sonnet-4-5-20250929',
+  max_tokens: 1024,
+  tools: tools,
+  messages: [
+    { role: 'user', content: '东京现在天气怎么样？' }
+  ]
+});
+
+if (response.stop_reason === 'tool_use') {
+  const toolUse = response.content.find(b => b.type === 'tool_use');
+  
+  // 执行你的工具
+  const toolResult = { temperature: "22°C", condition: "晴天" };
+  
+  const finalResponse = await client.messages.create({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 1024,
+    tools: tools,
+    messages: [
+      { role: 'user', content: '东京现在天气怎么样？' },
+      { role: 'assistant', content: response.content },
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'tool_result',
+            tool_use_id: toolUse.id,
+            content: JSON.stringify(toolResult)
+          }
+        ]
+      }
+    ]
+  });
+  
+  console.log(finalResponse.content[0].text);
+}
+```
+  </Tab>
+</Tabs>
+
+## 更多资源
+
+<Card title="Tool Use 官方文档" icon="book" href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use">
+  完整的工具定义和响应处理指南
+</Card>

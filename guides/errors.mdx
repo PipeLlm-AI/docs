@@ -1,0 +1,129 @@
+---
+title: 'Error Reference'
+description: 'Complete guide to API error types, HTTP status codes, and retry strategies'
+i18n: "en"
+---
+
+# API Error Reference
+
+All API errors follow a consistent JSON format:
+
+```json
+{
+  "error": {
+    "type": "error_type",
+    "code": "http_status_code",
+    "message": "Human-readable error message"
+  }
+}
+```
+
+## Error Types
+
+| HTTP Code | Error Type | Description |
+|-----------|------------|-------------|
+| 400 | `invalid_request_error` | Request body or parameters are malformed |
+| 401 | `authentication_error` | API key is missing, invalid, or expired |
+| 402 | `insufficient_balance` | Account balance is insufficient |
+| 403 | `permission_error` | Account lacks access rights to the resource |
+| 404 | `not_found_error` | Model or resource does not exist |
+| 405 | `invalid_request_error` | Wrong HTTP method |
+| 429 | `rate_limit_error` | Too many requests, please retry later |
+| 500+ | `api_error` | An error occurred while processing your request |
+| 529 | `overloaded_error` | Service is temporarily overloaded, please retry later |
+
+## Error Examples
+
+### Authentication Error (401)
+
+```json
+{
+  "error": {
+    "type": "authentication_error",
+    "code": "401",
+    "message": "Incorrect API key provided. Please visit https://console.pipellm.com/account/api-keys to find your API key."
+  }
+}
+```
+
+### Rate Limit Error (429)
+
+When you exceed rate limits, the response includes your current limits:
+
+```json
+{
+  "error": {
+    "type": "rate_limit_error",
+    "code": "429",
+    "message": "Rate limit exceeded. Your current limit is 100 requests per minute (approximately 1 requests per second). Please visit https://console.pipellm.com/billing to upgrade your plan for higher limits.",
+    "rate_limit": {
+      "rpm": 100,
+      "qps": 1
+    }
+  }
+}
+```
+
+### Insufficient Balance (402)
+
+```json
+{
+  "error": {
+    "type": "insufficient_balance",
+    "code": "402",
+    "message": "Insufficient balance. Please recharge your account at https://console.pipellm.com/billing."
+  }
+}
+```
+
+### Internal Error (500)
+
+```json
+{
+  "error": {
+    "type": "api_error",
+    "code": "500",
+    "message": "Internal server error occurred. Our team has been notified and is working on it."
+  }
+}
+```
+
+## Model-Specific Errors
+
+### Model Not Found
+
+When you request an invalid model, the API suggests similar models:
+
+```json
+{
+  "error": {
+    "type": "invalid_request_error",
+    "code": "400",
+    "message": "gpt-5 is not a valid model ID. Did you mean one of these: gpt-4o, gpt-4-turbo; You can view all the models in our documentation: https://docs.pipellm.com"
+  }
+}
+```
+
+### Model Missing in Request
+
+```json
+{
+  "error": {
+    "type": "invalid_request_error",
+    "code": "400",
+    "message": "The 'model' field is required but was not provided in the request"
+  }
+}
+```
+
+## 🤝 Support
+
+<Columns cols={2}>
+  <Card title="Contact Support" icon="envelope" href="mailto:support@pipellm.com">
+    Email us for assistance with API issues.
+  </Card>
+
+  <Card title="Usage Dashboard" icon="chart-line" href="https://console.pipellm.com">
+    Monitor your API usage and manage your account.
+  </Card>
+</Columns>

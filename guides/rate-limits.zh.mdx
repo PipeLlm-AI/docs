@@ -1,0 +1,39 @@
+---
+title: "速率限制"
+description: "基于余额的 API 速率限制"
+i18n: "zh"
+---
+
+## 工作原理
+
+您的速率限制根据账户余额 **动态计算**：
+
+| 余额 | RPM 限制 |
+|------|----------|
+| $1 - $10 | 30 |
+| $20 | 60 |
+| $200 | 600 |
+| $600+ | 1800（默认上限）|
+| 更高 | 联系客服 |
+
+**公式**：`RPM = 余额 × 3`（最低 30，不超过账户上限）
+
+## 速率限制响应 (429)
+
+```json
+{
+  "error": {
+    "type": "rate_limit_error",
+    "code": "rate_limit_exceeded",
+    "message": "Request rate limit exceeded. Please slow down."
+  }
+}
+```
+
+## 速率限制 Headers
+
+| Header | 描述 |
+|--------|------|
+| `x-ratelimit-limit-requests` | 当前 RPM 限制 |
+| `x-ratelimit-remaining-requests` | 剩余请求数 |
+| `x-ratelimit-reset-requests` | 重置时间 |

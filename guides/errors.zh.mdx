@@ -1,0 +1,129 @@
+---
+title: '错误参考'
+description: 'API 错误类型、HTTP 状态码和重试策略完整指南'
+i18n: "zh"
+---
+
+# API 错误参考
+
+所有 API 错误都遵循一致的 JSON 格式：
+
+```json
+{
+  "error": {
+    "type": "error_type",
+    "code": "http_status_code",
+    "message": "可读的错误信息"
+  }
+}
+```
+
+## 错误类型
+
+| HTTP 状态码 | 错误类型 | 描述 |
+|-------------|----------|------|
+| 400 | `invalid_request_error` | 请求体或参数格式错误 |
+| 401 | `authentication_error` | API 密钥缺失、无效或已过期 |
+| 402 | `insufficient_balance` | 账户余额不足 |
+| 403 | `permission_error` | 账户缺少访问该资源的权限 |
+| 404 | `not_found_error` | 模型或资源不存在 |
+| 405 | `invalid_request_error` | HTTP 方法错误 |
+| 429 | `rate_limit_error` | 请求过多，请稍后重试 |
+| 500+ | `api_error` | 服务器处理请求时发生错误 |
+| 529 | `overloaded_error` | 服务暂时过载，请稍后重试 |
+
+## 错误示例
+
+### 认证错误 (401)
+
+```json
+{
+  "error": {
+    "type": "authentication_error",
+    "code": "401",
+    "message": "Incorrect API key provided. Please visit https://console.pipellm.com/account/api-keys to find your API key."
+  }
+}
+```
+
+### 速率限制错误 (429)
+
+当超过速率限制时，响应中会包含您当前的限制信息：
+
+```json
+{
+  "error": {
+    "type": "rate_limit_error",
+    "code": "429",
+    "message": "Rate limit exceeded. Your current limit is 100 requests per minute (approximately 1 requests per second). Please visit https://console.pipellm.com/billing to upgrade your plan for higher limits.",
+    "rate_limit": {
+      "rpm": 100,
+      "qps": 1
+    }
+  }
+}
+```
+
+### 余额不足 (402)
+
+```json
+{
+  "error": {
+    "type": "insufficient_balance",
+    "code": "402",
+    "message": "Insufficient balance. Please recharge your account at https://console.pipellm.com/billing."
+  }
+}
+```
+
+### 内部错误 (500)
+
+```json
+{
+  "error": {
+    "type": "api_error",
+    "code": "500",
+    "message": "Internal server error occurred. Our team has been notified and is working on it."
+  }
+}
+```
+
+## 模型相关错误
+
+### 模型未找到
+
+当请求无效的模型时，API 会建议相似的模型：
+
+```json
+{
+  "error": {
+    "type": "invalid_request_error",
+    "code": "400",
+    "message": "gpt-5 is not a valid model ID. Did you mean one of these: gpt-4o, gpt-4-turbo; You can view all the models in our documentation: https://docs.pipellm.com"
+  }
+}
+```
+
+### 请求中缺少模型
+
+```json
+{
+  "error": {
+    "type": "invalid_request_error",
+    "code": "400",
+    "message": "The 'model' field is required but was not provided in the request"
+  }
+}
+```
+
+## 🤝 支持
+
+<Columns cols={2}>
+  <Card title="联系支持" icon="envelope" href="mailto:support@pipellm.com">
+    通过邮件联系我们获取 API 问题帮助。
+  </Card>
+
+  <Card title="使用统计面板" icon="chart-line" href="https://console.pipellm.com">
+    监控您的 API 使用情况并管理账户。
+  </Card>
+</Columns>

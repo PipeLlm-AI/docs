@@ -1,0 +1,146 @@
+---
+title: "Anthropic SDK"
+description: "使用 Anthropic SDK 调用 Claude 模型"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/anthropic/overview)。
+
+## 安装
+
+<Tabs>
+  <Tab title="Python">
+```bash
+pip install anthropic
+```
+  </Tab>
+  <Tab title="Node.js">
+```bash
+npm install @anthropic-ai/sdk
+```
+  </Tab>
+  <Tab title="Go">
+```bash
+go get github.com/anthropics/anthropic-sdk-go
+```
+  </Tab>
+</Tabs>
+
+## 代码示例
+
+<Tabs>
+  <Tab title="cURL">
+```bash
+curl https://api.pipellm.com/v1/messages \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: $PIPELLM_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -d @- << 'EOF'
+{
+  "model": "claude-sonnet-4-5-20250929",
+  "max_tokens": 1024,
+  "messages": [
+    {"role": "user", "content": "Why is the sky blue?"}
+  ]
+}
+EOF
+```
+  </Tab>
+  <Tab title="Python">
+```python
+import os
+import anthropic
+
+client = anthropic.Anthropic(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  base_url='https://api.pipellm.com'
+)
+
+message = client.messages.create(
+  model='claude-sonnet-4-5-20250929',
+  max_tokens=1024,
+  messages=[
+    {'role': 'user', 'content': 'Why is the sky blue?'}
+  ]
+)
+
+print(message.content[0].text)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.PIPELLM_API_KEY,
+  baseURL: 'https://api.pipellm.com'
+});
+
+const message = await client.messages.create({
+  model: 'claude-sonnet-4-5-20250929',
+  max_tokens: 1024,
+  messages: [
+    { role: 'user', content: 'Why is the sky blue?' }
+  ]
+});
+
+console.log(message.content[0].text);
+```
+  </Tab>
+  <Tab title="Go">
+```go
+package main
+
+import (
+  "context"
+  "os"
+  "github.com/anthropics/anthropic-sdk-go"
+  "github.com/anthropics/anthropic-sdk-go/option"
+)
+
+func main() {
+  client := anthropic.NewClient(
+    option.WithAPIKey(os.Getenv("PIPELLM_API_KEY")),
+    option.WithBaseURL("https://api.pipellm.com"),
+  )
+
+  message, _ := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+    Model:     anthropic.F("claude-sonnet-4-5-20250929"),
+    MaxTokens: anthropic.Int(1024),
+    Messages: anthropic.F([]anthropic.MessageParam{
+      anthropic.NewUserMessage(anthropic.NewTextBlock("Why is the sky blue?")),
+    }),
+  })
+}
+```
+  </Tab>
+</Tabs>
+
+## 请求参数
+
+| 参数 | 类型 | 必需 | 描述 |
+|------|------|------|------|
+| `model` | string | 是 | 模型 ID（如 `claude-sonnet-4-5-20250929`）|
+| `messages` | array | 是 | 消息对象数组 |
+| `max_tokens` | integer | 是 | 最大生成 token 数 |
+| `temperature` | number | 否 | 采样温度（0-1）|
+| `stream` | boolean | 否 | 启用流式响应 |
+
+## 响应格式
+
+```json
+{
+  "id": "msg_xxx",
+  "type": "message",
+  "role": "assistant",
+  "content": [
+    {"type": "text", "text": "The sky appears blue because..."}
+  ],
+  "model": "claude-sonnet-4-5-20250929",
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 10,
+    "output_tokens": 50
+  }
+}
+```

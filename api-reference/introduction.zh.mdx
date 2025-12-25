@@ -1,63 +1,51 @@
 ---
 title: "API 参考"
-description: "PipeLLM 网关的官方 API 参考文档"
+description: "使用您熟悉的 SDK 接入 PipeLLM - 只需更改 baseURL"
 i18n: "zh"
 ---
 
 # API 参考
 
-PipeLLM 网关的官方 API 参考文档。
+PipeLLM Gateway 支持多种 API 格式。使用您熟悉的原生 SDK，只需更改 baseURL。
 
-## 📚 概述
+## 快速开始
 
-PipeLLM 网关支持所有官方 API 端点：
+选择您使用的 API 格式：
 
-- `/v1/chat/completions` - 聊天补全
-- `/v1/completions` - 文本补全
-- `/v1/embeddings` - 向量嵌入
-- `/v1/audio/transcriptions` - 语音转文本
-- `/v1/images/generations` - 图像生成
+| API 格式 | 支持的模型 | 端点 |
+|----------|------------|------|
+| [OpenAI 兼容](/api-reference/openai/chat-completions) | GPT、Grok、DeepSeek、Groq 等 | `/v1/chat/completions` |
+| [Anthropic](/api-reference/anthropic/messages) | Claude 系列 | `/v1/messages` |
+| [Gemini](/api-reference/gemini/generate-content) | Gemini 系列 | `/v1beta/models/{model}:generateContent` |
 
-## 🔐 认证
+## 认证
 
-所有端点都使用 Bearer token 认证：
+所有请求使用 PipeLLM API Key，不同格式使用不同的 Header：
 
-```bash
-curl -H "Authorization: Bearer YOUR_API_KEY" \
-     -H "Content-Type: application/json" \
-     -d '{"model": "gpt-4", "messages": [...]}'
-     https://api.pipellm.com/v1/chat/completions
+| API 格式 | Header |
+|----------|--------|
+| OpenAI 兼容 | `Authorization: Bearer $PIPELLM_API_KEY` |
+| Anthropic | `x-api-key: $PIPELLM_API_KEY` |
+| Gemini | `x-goog-api-key: $PIPELLM_API_KEY` |
+
+## Base URL
+
+```
+https://api.pipellm.com
 ```
 
-## 📊 速率限制
+## 下一步
 
-- **标准**：1000 请求/分钟
-- **企业**：可自定义限制
-- **突发**：最多 100 并发请求
-
-## 🚨 错误代码
-
-| 代码 | 错误 | 描述 |
-|------|------|------|
-| 401 | Unauthorized | 无效或缺失的 API 密钥 |
-| 429 | Too Many Requests | 超出速率限制 |
-| 502 | Bad Gateway | 上游服务错误 |
-| 503 | Service Unavailable | 服务暂时不可用 |
-
-## 📝 下一步
-
-<Columns cols={2}>
-  <Card title="网关特性" icon="gateway" href="/api-reference/gateway-introduction">
-    了解 PipeLLM 网关的核心功能。
+<Columns cols={3}>
+  <Card title="OpenAI 兼容" icon="bolt" href="/api-reference/openai/chat-completions">
+    GPT、Grok、DeepSeek、Groq 等
   </Card>
 
-  <Card title="端点示例" icon="list" href="/api-reference/endpoint">
-    查看实用的 API 示例。
+  <Card title="Anthropic" icon="message" href="/api-reference/anthropic/messages">
+    Claude 系列模型
+  </Card>
+
+  <Card title="Gemini" icon="sparkles" href="/api-reference/gemini/generate-content">
+    Google Gemini 模型
   </Card>
 </Columns>
-
-## 🤝 支持
-
-有关 API 相关问题：
-- **邮箱**：support@pipellm.com
-- **控制台**：https://console.pipellm.com

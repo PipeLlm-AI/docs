@@ -1,94 +1,62 @@
 ---
-title: "Quickstart"
-description: "Get started with PipeLLM Gateway in minutes"
+title: "Quick Start"
+description: "Get started with PipeLLM in 3 steps"
 ---
 
-# Quickstart
+## 1. Get Your API Key
 
-Get your PipeLLM Gateway integration running in minutes.
+1. Sign up at [console.pipellm.com](https://console.pipellm.com)
+2. Top up your balance
+3. Create an API key
 
-## 🚀 Three Simple Steps
+## 2. Make Your First Request
 
-### Step 1: Get Your API Key
+<Tabs>
+  <Tab title="OpenAI">
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
+  </Tab>
+  <Tab title="Anthropic">
+```bash
+curl https://api.pipellm.com/v1/messages \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+    "model": "claude-sonnet-4-5-latest",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
+  </Tab>
+  <Tab title="Gemini">
+```bash
+curl "https://api.pipellm.com/v1beta/models/gemini-3-flash-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{"parts": [{"text": "Hello!"}]}]
+  }'
+```
+  </Tab>
+</Tabs>
 
-<AccordionGroup>
-  <Accordion icon="key" title="Obtain API Key">
-    Contact your administrator or sales representative to get your API key.
-  </Accordion>
-  <Accordion icon="terminal" title="Set Up Environment">
-    1. Install your preferred SDK (OpenAI, Anthropic, etc.)
-    2. Set your API key
-    3. Configure the gateway URL
-  </Accordion>
-</AccordionGroup>
+## 3. Explore More
 
-### Step 2: Modify Your Code (2 Steps!)
-
-<AccordionGroup>
-  <Accordion icon="code" title="Update SDK Configuration">
-    **For Anthropic SDK:**
-    ```python
-    from anthropic import Anthropic
-    client = Anthropic(
-        api_key="your-pipellm-key",
-        base_url="https://api.pipellm.com/v1"  # Point to our gateway
-    )
-    ```
-
-    **For OpenAI SDK:**
-    ```python
-    import openai
-    client = openai.OpenAI(
-        api_key="your-pipellm-key",
-        base_url="https://api.pipellm.com/v1"  # Point to our gateway
-    )
-    ```
-  </Accordion>
-
-  <Accordion icon="play" title="Test Your Connection">
-    ```python
-    response = client.messages.create(
-        model="claude-3-sonnet",
-        messages=[{"role": "user", "content": "Hello"}]
-    )
-    print(response.content[0].text)
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go Live
-
-<Accordion icon="rocket" title="Deploy">
-  1. Update your production configuration
-  2. Monitor usage via management dashboard
-  3. Start enjoying better performance and cost optimization!
-</Accordion>
-
-## 📚 Next Steps
-
-<Columns cols={2}>
-  <Card title="Gateway Features" icon="gateway" href="/api-reference/gateway-introduction">
-    Learn about PipeLLM Gateway core capabilities.
+<Columns cols={3}>
+  <Card title="OpenAI Compatible" href="/api-reference/openai/overview">
+    GPT, Grok, GLM, DeepSeek
   </Card>
-
-  <Card title="Protocol Conversion" icon="arrows-rotate" href="/api-reference/format-conversion">
-    Understand transparent protocol conversion.
+  <Card title="Anthropic" href="/api-reference/anthropic/overview">
+    Opus, Sonnet, Haiku
   </Card>
-
-  <Card title="Supported Platforms" icon="server" href="/api-reference/supported-platforms">
-    See all supported LLM providers.
-  </Card>
-
-  <Card title="Advanced Configuration" icon="cog" href="/development">
-    Configure advanced settings and monitoring.
+  <Card title="Gemini" href="/api-reference/gemini/overview">
+    Gemini 3, 2.5, 2.0
   </Card>
 </Columns>
-
-## 💡 Pro Tips
-
-- **Zero Code Changes**: Use existing SDKs without modification
-- **Smart Routing**: Gateway auto-selects best provider
-- **High Performance**: < 100ms gateway latency
-- **Enterprise Ready**: 99.9% uptime guarantee
-
-**Need help?** Contact support@pipellm.com

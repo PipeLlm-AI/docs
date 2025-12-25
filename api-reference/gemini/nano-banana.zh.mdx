@@ -1,0 +1,209 @@
+---
+title: "Nano Banana 图像生成"
+description: "使用 Gemini Nano Banana 多模态模型生成和编辑图像"
+i18n: "zh"
+---
+
+认证信息请参考 [概述](/api-reference/gemini/overview)。
+
+## 什么是 Nano Banana
+
+Nano Banana 是 Gemini 的**多模态图像生成能力**，使用与文本模型相同的 `generateContent` 端点。
+
+| 模型 | Model ID | 特点 |
+|------|----------|------|
+| **Nano Banana** | `gemini-2.5-flash-image` | 速度优先，适合高吞吐任务 |
+| **Nano Banana Pro** | `gemini-3-pro-image-preview` | 专业制作、高级推理、高保真文本渲染、支持 4K 分辨率 |
+
+## 端点
+
+与文本模型相同：
+
+| 类型 | 端点 |
+|------|------|
+| 非流式 | `POST /v1beta/models/{model}:generateContent` |
+| 流式 | `POST /v1beta/models/{model}:streamGenerateContent` |
+
+## 文字生图
+
+<Tabs>
+  <Tab title="cURL">
+```bash
+curl -s -X POST \
+  "https://api.pipellm.com/v1beta/models/gemini-2.5-flash-image:generateContent" \
+  -H "x-goog-api-key: $PIPELLM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "contents": [{
+    "parts": [
+      {"text": "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"}
+    ]
+  }]
+}
+EOF
+```
+  </Tab>
+  <Tab title="Python">
+```python
+from google import genai
+from PIL import Image
+
+client = genai.Client(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  http_options={'base_url': 'https://api.pipellm.com'}
+)
+
+response = client.models.generate_content(
+  model="gemini-2.5-flash-image",
+  contents=["Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme"],
+)
+
+for part in response.parts:
+  if part.text is not None:
+    print(part.text)
+  elif part.inline_data is not None:
+    image = part.as_image()
+    image.save("generated_image.png")
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { GoogleGenAI } from "@google/genai";
+import * as fs from "node:fs";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.PIPELLM_API_KEY,
+  httpOptions: { baseUrl: 'https://api.pipellm.com' }
+});
+
+const response = await ai.models.generateContent({
+  model: "gemini-2.5-flash-image",
+  contents: "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme",
+});
+
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) {
+    console.log(part.text);
+  } else if (part.inlineData) {
+    const buffer = Buffer.from(part.inlineData.data, "base64");
+    fs.writeFileSync("generated_image.png", buffer);
+  }
+}
+```
+  </Tab>
+</Tabs>
+
+## 图生图（垫图编辑）
+
+上传参考图像，结合文字提示生成新图像：
+
+<Tabs>
+  <Tab title="cURL">
+```bash
+IMG_BASE64=$(base64 -w0 /path/to/cat_image.jpeg)
+
+curl -s -X POST \
+  "https://api.pipellm.com/v1beta/models/gemini-2.5-flash-image:generateContent" \
+  -H "x-goog-api-key: $PIPELLM_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @- << EOF
+{
+  "contents": [{
+    "parts": [
+      {"text": "Create a picture of my cat eating a nano-banana in a fancy restaurant under the Gemini constellation"},
+      {"inline_data": {"mime_type": "image/jpeg", "data": "$IMG_BASE64"}}
+    ]
+  }]
+}
+EOF
+```
+  </Tab>
+  <Tab title="Python">
+```python
+from google import genai
+from PIL import Image
+
+client = genai.Client(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  http_options={'base_url': 'https://api.pipellm.com'}
+)
+
+image = Image.open('/path/to/cat_image.png')
+
+response = client.models.generate_content(
+  model="gemini-2.5-flash-image",
+  contents=[
+    "Create a picture of my cat eating a nano-banana in a fancy restaurant under the Gemini constellation",
+    image
+  ],
+)
+
+for part in response.parts:
+  if part.text is not None:
+    print(part.text)
+  elif part.inline_data is not None:
+    image = part.as_image()
+    image.save("edited_image.png")
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { GoogleGenAI } from "@google/genai";
+import * as fs from "node:fs";
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.PIPELLM_API_KEY,
+  httpOptions: { baseUrl: 'https://api.pipellm.com' }
+});
+
+const imageData = fs.readFileSync("cat_image.png");
+const base64Image = imageData.toString("base64");
+
+const response = await ai.models.generateContent({
+  model: "gemini-2.5-flash-image",
+  contents: [
+    { text: "Create a picture of my cat eating a nano-banana in a fancy restaurant under the Gemini constellation" },
+    { inlineData: { mimeType: "image/png", data: base64Image } }
+  ],
+});
+
+for (const part of response.candidates[0].content.parts) {
+  if (part.text) {
+    console.log(part.text);
+  } else if (part.inlineData) {
+    const buffer = Buffer.from(part.inlineData.data, "base64");
+    fs.writeFileSync("edited_image.png", buffer);
+  }
+}
+```
+  </Tab>
+</Tabs>
+
+## 响应格式
+
+图像生成的响应是多模态的，包含文本和 base64 编码的图像数据：
+
+```json
+{
+  "candidates": [{
+    "content": {
+      "parts": [
+        { "text": "Here is your generated image..." },
+        {
+          "inlineData": {
+            "mimeType": "image/png",
+            "data": "<BASE64_IMAGE_DATA>"
+          }
+        }
+      ]
+    }
+  }]
+}
+```
+
+## 更多功能
+
+<Card title="Nano Banana 官方文档" icon="book" href="https://ai.google.dev/gemini-api/docs/image-generation">
+  支持多轮编辑、4K 分辨率、多图合成等高级功能
+</Card>

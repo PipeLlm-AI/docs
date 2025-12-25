@@ -1,0 +1,60 @@
+---
+title: "概述"
+description: "Gemini API 认证、端点和支持的模型"
+i18n: "zh"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com
+```
+
+## 认证
+
+| Header | 值 |
+|--------|---|
+| `x-goog-api-key` | `$PIPELLM_API_KEY` |
+
+## 端点
+
+| 类型 | 端点 |
+|------|------|
+| 非流式 | `POST /v1beta/models/{model}:generateContent` |
+| 流式 | `POST /v1beta/models/{model}:streamGenerateContent` |
+
+## 支持的模型
+
+**文本模型**
+- gemini-3-pro
+- gemini-3-flash
+- gemini-2.5-flash
+- gemini-2.5-flash-lite
+- gemini-2.5-pro
+- gemini-2.0-flash
+- gemini-2.0-flash-lite
+
+**图像模型 (Nano Banana)**
+- gemini-3-pro-image-preview（Nano Banana Pro）
+- gemini-2.5-flash-image（Nano Banana）
+
+> [!IMPORTANT]
+> **Gemini 3 系列**：HTTP/cURL 请求需要请求签名。详情请参考 [Gemini 3 文档](https://ai.google.dev/gemini-api/docs/gemini-3)。SDK 用户不受影响。
+
+完整模型列表请参考 [Gemini API 模型文档](https://ai.google.dev/gemini-api/docs/models)。
+
+## SDK 选择
+
+<Columns cols={3}>
+  <Card title="Google GenAI SDK" icon="code" href="/api-reference/gemini/generate-content">
+    官方 SDK，推荐使用
+  </Card>
+
+  <Card title="LangChain" icon="link" href="/api-reference/gemini/langchain">
+    LangChain 框架集成
+  </Card>
+
+  <Card title="Nano Banana" icon="image" href="/api-reference/gemini/nano-banana">
+    图像生成
+  </Card>
+</Columns>

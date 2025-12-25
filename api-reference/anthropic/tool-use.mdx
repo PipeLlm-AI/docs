@@ -1,0 +1,165 @@
+---
+title: "Tool Use"
+description: "Claude function calling and tool use"
+i18n: "en"
+---
+
+For authentication and model list, see [Overview](/api-reference/anthropic/overview).
+
+## What is Tool Use
+
+Tool Use (also called function calling) allows Claude to interact with external tools, APIs, and data sources. Claude doesn't execute tools directly—it generates structured requests that your application executes.
+
+## How It Works
+
+1. **Define tools** with names, descriptions, and input schemas
+2. **Claude identifies** when a tool is needed
+3. **Claude generates** a tool use request (JSON)
+4. **Your app executes** the tool
+5. **Return result** to Claude
+6. **Claude responds** with the final answer
+
+## Basic Example
+
+<Tabs>
+  <Tab title="Python">
+```python
+import os
+import anthropic
+
+client = anthropic.Anthropic(
+  api_key=os.getenv('PIPELLM_API_KEY'),
+  base_url='https://api.pipellm.com'
+)
+
+# Define tools
+tools = [
+  {
+    "name": "get_weather",
+    "description": "Get the current weather in a location",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "City name, e.g., San Francisco"
+        }
+      },
+      "required": ["location"]
+    }
+  }
+]
+
+# First call - Claude decides to use the tool
+response = client.messages.create(
+  model="claude-sonnet-4-5-20250929",
+  max_tokens=1024,
+  tools=tools,
+  messages=[
+    {"role": "user", "content": "What's the weather in Tokyo?"}
+  ]
+)
+
+# Check if Claude wants to use a tool
+if response.stop_reason == "tool_use":
+  tool_use = next(b for b in response.content if b.type == "tool_use")
+  
+  # Execute your tool (example)
+  tool_result = {"temperature": "22°C", "condition": "Sunny"}
+  
+  # Return result to Claude
+  final_response = client.messages.create(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=1024,
+    tools=tools,
+    messages=[
+      {"role": "user", "content": "What's the weather in Tokyo?"},
+      {"role": "assistant", "content": response.content},
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "tool_result",
+            "tool_use_id": tool_use.id,
+            "content": str(tool_result)
+          }
+        ]
+      }
+    ]
+  )
+  
+  print(final_response.content[0].text)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.PIPELLM_API_KEY,
+  baseURL: 'https://api.pipellm.com'
+});
+
+const tools = [
+  {
+    name: "get_weather",
+    description: "Get the current weather in a location",
+    input_schema: {
+      type: "object",
+      properties: {
+        location: {
+          type: "string",
+          description: "City name, e.g., San Francisco"
+        }
+      },
+      required: ["location"]
+    }
+  }
+];
+
+const response = await client.messages.create({
+  model: 'claude-sonnet-4-5-20250929',
+  max_tokens: 1024,
+  tools: tools,
+  messages: [
+    { role: 'user', content: "What's the weather in Tokyo?" }
+  ]
+});
+
+if (response.stop_reason === 'tool_use') {
+  const toolUse = response.content.find(b => b.type === 'tool_use');
+  
+  // Execute your tool
+  const toolResult = { temperature: "22°C", condition: "Sunny" };
+  
+  const finalResponse = await client.messages.create({
+    model: 'claude-sonnet-4-5-20250929',
+    max_tokens: 1024,
+    tools: tools,
+    messages: [
+      { role: 'user', content: "What's the weather in Tokyo?" },
+      { role: 'assistant', content: response.content },
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'tool_result',
+            tool_use_id: toolUse.id,
+            content: JSON.stringify(toolResult)
+          }
+        ]
+      }
+    ]
+  });
+  
+  console.log(finalResponse.content[0].text);
+}
+```
+  </Tab>
+</Tabs>
+
+## More Resources
+
+<Card title="Tool Use Documentation" icon="book" href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use">
+  Complete guide on defining tools and handling responses
+</Card>

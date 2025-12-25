@@ -1,60 +1,33 @@
 ---
-title: "PipeLLM 网关文档"
-description: "高性能 LLM API 网关，支持多平台格式转换和统一访问"
+title: "PipeLLM 网关"
+description: "多模型提供商统一 API 网关"
+i18n: "zh"
 ---
 
-# PipeLLM 网关
+通过单一 API 端点访问 OpenAI、Anthropic、Gemini 等多个模型。
 
-支持多平台格式转换和统一访问的高性能 LLM API 网关。
+## 快速开始
 
-## 🚀 快速开始
-
-几分钟内让您的 PipeLLM 网关运行起来。
-
-<Card title="从这里开始" icon="rocket" horizontal href="/quickstart">
-  按照我们的三步快速开始指南。
+<Card title="快速开始" href="/quickstart.zh">
+  获取 API Key，发起第一个请求
 </Card>
 
-## 📚 API 参考
+## 支持的提供商
 
-开发者的完整技术文档。
-
-<Columns cols={2}>
-  <Card title="网关介绍" icon="gateway" href="/api-reference/gateway-introduction">
-    了解 PipeLLM 网关的核心功能和能力。
+<Columns cols={3}>
+  <Card title="OpenAI 通用" href="/api-reference/openai/overview.zh">
+    GPT 系列、Grok 系列、GLM 系列、DeepSeek 系列
   </Card>
-  <Card title="格式转换" icon="arrows-rotate" href="/api-reference/format-conversion">
-    了解协议转换和智能转发的工作原理。
+  <Card title="Anthropic" href="/api-reference/anthropic/overview.zh">
+    Opus 系列、Sonnet 系列、Haiku 系列
   </Card>
-  <Card title="支持的平台" icon="server" href="/api-reference/supported-platforms">
-    查看所有支持的 LLM 提供商及其功能。
-  </Card>
-  <Card title="官方 API" icon="terminal" href="/api-reference/introduction">
-    从 OpenAPI 规范自动生成 API 文档。
+  <Card title="Gemini" href="/api-reference/gemini/overview.zh">
+    Gemini 3 系列、2.5 系列、2.0 系列
   </Card>
 </Columns>
 
-## 🛠️ 开发
+## 为什么选择 PipeLLM
 
-<Columns cols={2}>
-  <Card title="开发环境" icon="code" href="/development">
-    设置您的开发环境。
-  </Card>
-  <Card title="端点示例" icon="list" href="/api-reference/endpoint">
-    查看 API 端点示例。
-  </Card>
-</Columns>
-
-## 💡 特性
-
-- **零代码更改**：使用官方 SDK（OpenAI、Anthropic、Google）
-- **智能路由**：基于负载和成本自动选择最佳提供商
-- **高并发**：支持 10,000+ 并发连接
-- **透明协议转换**：无需学习新 API
-- **企业级安全**：99.9% 正常时间保证
-
-## 🤝 支持
-
-- **邮箱**：support@pipellm.com
-- **控制台**：https://console.pipellm.com
-- **模型**：https://www.pipellm.com/models
+- **单一端点**：使用熟悉的 SDK（OpenAI、Anthropic、Google）
+- **多提供商**：一个端点访问 50+ 模型
+- **按量付费**：无订阅，仅按使用量付费

@@ -38,16 +38,14 @@
                 "group": "Quick Start",
                 "pages": [
                   "index",
-                  "quickstart",
-                  "development"
+                  "quickstart"
                 ]
               },
               {
-                "group": "Gateway Features",
+                "group": "Platform Guide",
                 "pages": [
-                  "guides/format-conversion",
-                  "guides/supported-platforms",
-                  "guides/search-ai-setup"
+                  "guides/errors",
+                  "guides/rate-limits"
                 ]
               }
             ]
@@ -56,24 +54,36 @@
             "tab": "API Reference",
             "groups": [
               {
-                "group": "PipeLLM Gateway",
-                "pages": [
-                  "api-reference/gateway-introduction"
-                ]
-              },
-              {
-                "group": "Official API",
+                "group": "Getting Started",
                 "pages": [
                   "api-reference/introduction"
                 ]
               },
               {
-                "group": "Endpoint Examples",
+                "group": "OpenAI Compatible",
                 "pages": [
-                  "api-reference/endpoint/get",
-                  "api-reference/endpoint/create",
-                  "api-reference/endpoint/delete",
-                  "api-reference/endpoint/webhook"
+                  "api-reference/openai/overview",
+                  "api-reference/openai/chat-completions",
+                  "api-reference/openai/langchain"
+                ]
+              },
+              {
+                "group": "Anthropic",
+                "pages": [
+                  "api-reference/anthropic/overview",
+                  "api-reference/anthropic/messages",
+                  "api-reference/anthropic/tool-use",
+                  "api-reference/anthropic/langchain",
+                  "api-reference/anthropic/claude-code"
+                ]
+              },
+              {
+                "group": "Gemini",
+                "pages": [
+                  "api-reference/gemini/overview",
+                  "api-reference/gemini/generate-content",
+                  "api-reference/gemini/langchain",
+                  "api-reference/gemini/nano-banana"
                 ]
               }
             ]
@@ -90,16 +100,14 @@
                 "group": "快速开始",
                 "pages": [
                   "index.zh",
-                  "quickstart.zh",
-                  "development.zh"
+                  "quickstart.zh"
                 ]
               },
               {
-                "group": "网关功能",
+                "group": "平台指南",
                 "pages": [
-                  "guides/format-conversion.zh",
-                  "guides/supported-platforms.zh",
-                  "guides/search-ai-setup.zh"
+                  "guides/errors.zh",
+                  "guides/rate-limits.zh"
                 ]
               }
             ]
@@ -108,24 +116,36 @@
             "tab": "API 参考",
             "groups": [
               {
-                "group": "PipeLLM 网关",
-                "pages": [
-                  "api-reference/gateway-introduction.zh"
-                ]
-              },
-              {
-                "group": "官方 API",
+                "group": "快速开始",
                 "pages": [
                   "api-reference/introduction.zh"
                 ]
               },
               {
-                "group": "端点示例",
+                "group": "OpenAI 兼容",
                 "pages": [
-                  "api-reference/endpoint/get",
-                  "api-reference/endpoint/create",
-                  "api-reference/endpoint/delete",
-                  "api-reference/endpoint/webhook"
+                  "api-reference/openai/overview.zh",
+                  "api-reference/openai/chat-completions.zh",
+                  "api-reference/openai/langchain.zh"
+                ]
+              },
+              {
+                "group": "Anthropic",
+                "pages": [
+                  "api-reference/anthropic/overview.zh",
+                  "api-reference/anthropic/messages.zh",
+                  "api-reference/anthropic/tool-use.zh",
+                  "api-reference/anthropic/langchain.zh",
+                  "api-reference/anthropic/claude-code.zh"
+                ]
+              },
+              {
+                "group": "Gemini",
+                "pages": [
+                  "api-reference/gemini/overview.zh",
+                  "api-reference/gemini/generate-content.zh",
+                  "api-reference/gemini/langchain.zh",
+                  "api-reference/gemini/nano-banana.zh"
                 ]
               }
             ]
@@ -153,15 +173,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

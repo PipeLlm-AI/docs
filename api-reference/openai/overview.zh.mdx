@@ -1,0 +1,57 @@
+---
+title: "概述"
+description: "OpenAI Compatible API 认证、端点和支持的模型"
+i18n: "zh"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com/v1
+```
+
+## 认证
+
+| Header | 值 |
+|--------|---|
+| `Authorization` | `Bearer $PIPELLM_API_KEY` |
+
+## 端点
+
+| 类型 | 端点 |
+|------|------|
+| Chat Completions | `POST /v1/chat/completions` |
+
+## 支持的模型
+
+**OpenAI**
+- `gpt-4.1` / `gpt-4.1-mini`（最新）
+- `gpt-4o` / `gpt-4o-mini`
+- `o3` / `o4-mini` / `o4-mini-high`（推理模型）
+
+**Grok (xAI)**
+- `grok-3`（最新）
+- `grok-2` / `grok-2-mini`
+
+**DeepSeek**
+- `deepseek-chat`
+- `deepseek-coder`
+- `deepseek-reasoner`
+
+**Groq**
+- `llama-3.1-70b-versatile`
+- `mixtral-8x7b-32768`
+
+完整模型列表请参考 [OpenAI 模型文档](https://platform.openai.com/docs/models)。
+
+## 选择集成方式
+
+<Columns cols={2}>
+  <Card title="Chat Completions" icon="comments" href="/api-reference/openai/chat-completions">
+    OpenAI SDK，包含 Function Calling
+  </Card>
+
+  <Card title="LangChain SDK" icon="link" href="/api-reference/openai/langchain">
+    LangChain 框架
+  </Card>
+</Columns>

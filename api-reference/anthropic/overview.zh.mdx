@@ -1,0 +1,62 @@
+---
+title: "概述"
+description: "Anthropic API 认证、端点和支持的模型"
+i18n: "zh"
+---
+
+## Base URL
+
+```
+https://api.pipellm.com
+```
+
+## 认证
+
+| Header | 值 |
+|--------|---|
+| `x-api-key` | `$PIPELLM_API_KEY` |
+| `anthropic-version` | `2023-06-01` |
+
+## 端点
+
+| 类型 | 端点 |
+|------|------|
+| Messages | `POST /v1/messages` |
+| 流式 | `POST /v1/messages`（带 `stream: true`）|
+
+## 支持的模型
+
+**Claude Sonnet 4.5**（最新，推荐）
+- `claude-sonnet-4-5-20250929` / `claude-sonnet-4-5-latest`
+  - 最适合复杂 Agent 和编码任务
+  - 200K 上下文窗口
+
+**Claude Haiku 4.5**
+- `claude-haiku-4-5-20251015` / `claude-haiku-4-5-latest`
+  - 最快速、最经济
+
+**Claude 3.7 系列**
+- `claude-3-7-sonnet-20250219` / `claude-3-7-sonnet-latest`
+  - 混合推理，支持 Extended Thinking
+
+完整模型列表请参考 [Claude 模型文档](https://docs.anthropic.com/en/docs/about-claude/models)。
+
+## 选择集成方式
+
+<Columns cols={2}>
+  <Card title="Anthropic SDK" icon="code" href="/api-reference/anthropic/messages">
+    官方 SDK，推荐使用
+  </Card>
+
+  <Card title="Tool Use" icon="wrench" href="/api-reference/anthropic/tool-use">
+    函数调用
+  </Card>
+
+  <Card title="LangChain" icon="link" href="/api-reference/anthropic/langchain">
+    LangChain 框架
+  </Card>
+
+  <Card title="Claude Code" icon="terminal" href="/api-reference/anthropic/claude-code">
+    IDE 集成
+  </Card>
+</Columns>

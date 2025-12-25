@@ -1,0 +1,94 @@
+---
+title: "LangChain SDK"
+description: "使用 LangChain SDK 调用 Claude 模型"
+i18n: "zh"
+---
+
+认证和模型列表请参考 [概述](/api-reference/anthropic/overview)。
+
+## 安装
+
+```bash
+pip install langchain-anthropic
+```
+
+## 代码示例
+
+<Tabs>
+  <Tab title="Python">
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com'
+)
+
+response = llm.invoke([
+  ('user', 'Why is the sky blue?')
+])
+
+print(response.content)
+```
+  </Tab>
+  <Tab title="Node.js">
+```javascript
+import { ChatAnthropic } from '@langchain/anthropic';
+
+const llm = new ChatAnthropic({
+  model: 'claude-sonnet-4-5-20250929',
+  anthropicApiKey: process.env.PIPELLM_API_KEY,
+  anthropicApiUrl: 'https://api.pipellm.com'
+});
+
+const response = await llm.invoke([
+  { role: 'user', content: 'Why is the sky blue?' }
+]);
+
+console.log(response.content);
+```
+  </Tab>
+</Tabs>
+
+## 流式响应
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com',
+  streaming=True
+)
+
+for chunk in llm.stream('Tell me a story'):
+  print(chunk.content, end='', flush=True)
+```
+
+## 函数调用
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+from langchain_core.tools import tool
+
+@tool
+def get_weather(location: str) -> str:
+  """获取指定地点的天气"""
+  return f"{location} 的天气：22°C，晴天"
+
+llm = ChatAnthropic(
+  model='claude-sonnet-4-5-20250929',
+  anthropic_api_key=os.getenv('PIPELLM_API_KEY'),
+  anthropic_api_url='https://api.pipellm.com'
+)
+
+llm_with_tools = llm.bind_tools([get_weather])
+response = llm_with_tools.invoke("东京现在天气怎么样？")
+
+print(response.tool_calls)
+```

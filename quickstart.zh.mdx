@@ -1,94 +1,63 @@
 ---
 title: "快速开始"
-description: "几分钟内开始使用 PipeLLM 网关"
+description: "3 步开始使用 PipeLLM"
+i18n: "zh"
 ---
 
-# 快速开始
+## 1. 获取 API Key
 
-几分钟内让您的 PipeLLM 网关集成运行起来。
+1. 注册 [console.pipellm.com](https://console.pipellm.com)
+2. 充值余额
+3. 创建 API Key
 
-## 🚀 三个简单步骤
+## 2. 发起第一个请求
 
-### 步骤 1：获取您的 API 密钥
+<Tabs>
+  <Tab title="OpenAI">
+```bash
+curl https://api.pipellm.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [{"role": "user", "content": "你好！"}]
+  }'
+```
+  </Tab>
+  <Tab title="Anthropic">
+```bash
+curl https://api.pipellm.com/v1/messages \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+    "model": "claude-sonnet-4-5-latest",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "你好！"}]
+  }'
+```
+  </Tab>
+  <Tab title="Gemini">
+```bash
+curl "https://api.pipellm.com/v1beta/models/gemini-3-flash-preview:generateContent?key=YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{"parts": [{"text": "你好！"}]}]
+  }'
+```
+  </Tab>
+</Tabs>
 
-<AccordionGroup>
-  <Accordion icon="key" title="获取 API 密钥">
-    联系您的管理员或销售代表获取 API 密钥。
-  </Accordion>
-  <Accordion icon="terminal" title="设置环境">
-    1. 安装您首选的 SDK（OpenAI、Anthropic 等）
-    2. 设置您的 API 密钥
-    3. 配置网关 URL
-  </Accordion>
-</AccordionGroup>
+## 3. 探索更多
 
-### 步骤 2：修改您的代码（2 步！）
-
-<AccordionGroup>
-  <Accordion icon="code" title="更新 SDK 配置">
-    **对于 Anthropic SDK：**
-    ```python
-    from anthropic import Anthropic
-    client = Anthropic(
-        api_key="your-pipellm-key",
-        base_url="https://api.pipellm.com/v1"  # 指向我们的网关
-    )
-    ```
-
-    **对于 OpenAI SDK：**
-    ```python
-    import openai
-    client = openai.OpenAI(
-        api_key="your-pipellm-key",
-        base_url="https://api.pipellm.com/v1"  # 指向我们的网关
-    )
-    ```
-  </Accordion>
-
-  <Accordion icon="play" title="测试连接">
-    ```python
-    response = client.messages.create(
-        model="claude-3-sonnet",
-        messages=[{"role": "user", "content": "Hello"}]
-    )
-    print(response.content[0].text)
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### 步骤 3：上线
-
-<Accordion icon="rocket" title="部署">
-  1. 更新您的生产配置
-  2. 通过管理仪表板监控使用情况
-  3. 开始享受更好的性能和成本优化！
-</Accordion>
-
-## 📚 下一步
-
-<Columns cols={2}>
-  <Card title="网关特性" icon="gateway" href="/api-reference/gateway-introduction">
-    了解 PipeLLM 网关的核心功能。
+<Columns cols={3}>
+  <Card title="OpenAI 通用" href="/api-reference/openai/overview.zh">
+    GPT 系列、Grok 系列、GLM 系列、DeepSeek 系列
   </Card>
-
-  <Card title="协议转换" icon="arrows-rotate" href="/api-reference/format-conversion">
-    了解透明协议转换的工作原理。
+  <Card title="Anthropic" href="/api-reference/anthropic/overview.zh">
+    Opus 系列、Sonnet 系列、Haiku 系列
   </Card>
-
-  <Card title="支持的平台" icon="server" href="/api-reference/supported-platforms">
-    查看所有支持的 LLM 提供商。
-  </Card>
-
-  <Card title="高级配置" icon="cog" href="/development">
-    配置高级设置和监控。
+  <Card title="Gemini" href="/api-reference/gemini/overview.zh">
+    Gemini 3 系列、2.5 系列、2.0 系列
   </Card>
 </Columns>
-
-## 💡 实用技巧
-
-- **零代码更改**：使用现有 SDK，无需修改
-- **智能路由**：网关自动选择最佳提供商
-- **高性能**：< 100ms 网关延迟
-- **企业级**：99.9% 正常时间保证
-
-**需要帮助？** 联系 support@pipellm.com

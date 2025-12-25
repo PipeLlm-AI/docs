@@ -1,0 +1,60 @@
+---
+title: "Claude Code"
+description: "Configure Claude Code to use PipeLLM API"
+i18n: "en"
+---
+
+For authentication and model list, see [Overview](/api-reference/anthropic/overview).
+
+## What is Claude Code
+
+Claude Code is Anthropic's official AI coding assistant for your terminal and IDE. You can configure it to use PipeLLM as your API endpoint.
+
+## Configuration
+
+### Terminal
+
+Set the API base URL in your environment:
+
+```bash
+export ANTHROPIC_API_KEY="your-pipellm-api-key"
+export ANTHROPIC_BASE_URL="https://api.pipellm.com"
+```
+
+Then run Claude Code normally:
+
+```bash
+claude
+```
+
+### VS Code
+
+1. Open VS Code Settings (JSON)
+2. Add the following configuration:
+
+```json
+{
+  "claude.apiKey": "your-pipellm-api-key",
+  "claude.apiBaseUrl": "https://api.pipellm.com"
+}
+```
+
+### JetBrains IDEs
+
+1. Open `Settings` → `Tools` → `Claude`
+2. Set **API Key**: Your PipeLLM API key
+3. Set **API Base URL**: `https://api.pipellm.com`
+
+## Supported Models
+
+Claude Code works with all Claude models supported by PipeLLM:
+
+- `claude-3-7-sonnet-latest` (recommended)
+- `claude-sonnet-4-5-latest`
+- `claude-3-5-haiku-latest`
+
+## More Resources
+
+<Card title="Claude Code Documentation" icon="book" href="https://docs.anthropic.com/en/docs/claude-code">
+  Official Claude Code setup and usage guide
+</Card>
