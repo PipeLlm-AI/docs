@@ -42,6 +42,13 @@
                 ]
               },
               {
+                "group": "Use Cases",
+                "pages": [
+                  "use-cases/claude-code",
+                  "use-cases/nano-banana"
+                ]
+              },
+              {
                 "group": "Platform Guide",
                 "pages": [
                   "guides/errors",
@@ -73,8 +80,7 @@
                   "api-reference/anthropic/overview",
                   "api-reference/anthropic/messages",
                   "api-reference/anthropic/tool-use",
-                  "api-reference/anthropic/langchain",
-                  "api-reference/anthropic/claude-code"
+                  "api-reference/anthropic/langchain"
                 ]
               },
               {
@@ -82,8 +88,7 @@
                 "pages": [
                   "api-reference/gemini/overview",
                   "api-reference/gemini/generate-content",
-                  "api-reference/gemini/langchain",
-                  "api-reference/gemini/nano-banana"
+                  "api-reference/gemini/langchain"
                 ]
               }
             ]
@@ -101,6 +106,13 @@
                 "pages": [
                   "index.zh",
                   "quickstart.zh"
+                ]
+              },
+              {
+                "group": "应用场景",
+                "pages": [
+                  "use-cases/claude-code.zh",
+                  "use-cases/nano-banana.zh"
                 ]
               },
               {
@@ -135,8 +147,7 @@
                   "api-reference/anthropic/overview.zh",
                   "api-reference/anthropic/messages.zh",
                   "api-reference/anthropic/tool-use.zh",
-                  "api-reference/anthropic/langchain.zh",
-                  "api-reference/anthropic/claude-code.zh"
+                  "api-reference/anthropic/langchain.zh"
                 ]
               },
               {
@@ -144,8 +155,7 @@
                 "pages": [
                   "api-reference/gemini/overview.zh",
                   "api-reference/gemini/generate-content.zh",
-                  "api-reference/gemini/langchain.zh",
-                  "api-reference/gemini/nano-banana.zh"
+                  "api-reference/gemini/langchain.zh"
                 ]
               }
             ]
