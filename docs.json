@@ -36,24 +36,19 @@
             "groups": [
               {
                 "group": "Quick Start",
-                "pages": [
-                  "index",
-                  "quickstart"
-                ]
+                "pages": ["index", "quickstart"]
               },
               {
                 "group": "Use Cases",
                 "pages": [
                   "use-cases/claude-code",
-                  "use-cases/nano-banana"
+                  "use-cases/nano-banana",
+                  "use-cases/websearch"
                 ]
               },
               {
                 "group": "Platform Guide",
-                "pages": [
-                  "guides/errors",
-                  "guides/rate-limits"
-                ]
+                "pages": ["guides/errors", "guides/rate-limits"]
               }
             ]
           },
@@ -62,9 +57,7 @@
             "groups": [
               {
                 "group": "Getting Started",
-                "pages": [
-                  "api-reference/introduction"
-                ]
+                "pages": ["api-reference/introduction"]
               },
               {
                 "group": "OpenAI Compatible",
@@ -103,24 +96,19 @@
             "groups": [
               {
                 "group": "快速开始",
-                "pages": [
-                  "index.zh",
-                  "quickstart.zh"
-                ]
+                "pages": ["index.zh", "quickstart.zh"]
               },
               {
                 "group": "应用场景",
                 "pages": [
                   "use-cases/claude-code.zh",
-                  "use-cases/nano-banana.zh"
+                  "use-cases/nano-banana.zh",
+                  "use-cases/websearch.zh"
                 ]
               },
               {
                 "group": "平台指南",
-                "pages": [
-                  "guides/errors.zh",
-                  "guides/rate-limits.zh"
-                ]
+                "pages": ["guides/errors.zh", "guides/rate-limits.zh"]
               }
             ]
           },
@@ -129,9 +117,7 @@
             "groups": [
               {
                 "group": "快速开始",
-                "pages": [
-                  "api-reference/introduction.zh"
-                ]
+                "pages": ["api-reference/introduction.zh"]
               },
               {
                 "group": "OpenAI 兼容",
