@@ -80,40 +80,46 @@ data.data.organic.forEach((result) => {
 {
   "code": 200,
   "message": "ok",
+  "took_ms": 6050,
   "data": {
-    "searchParameters": {
-      "q": "latest AI news",
-      "gl": "us",
-      "hl": "en"
-    },
-    "answerBox": {
-      "title": "Featured Snippet Title",
-      "snippet": "Quick answer from Google's featured snippet...",
-      "link": "https://example.com/source"
-    },
     "organic": [
       {
-        "title": "Result Title",
-        "link": "https://example.com/page",
-        "snippet": "Page description or excerpt..."
+        "title": "AI News | Latest News | Insights Powering AI-Driven Business ...",
+        "link": "https://www.artificialintelligence-news.com/",
+        "snippet": "AI News delivers the latest updates in artificial intelligence, machine learning, deep learning, enterprise AI, and emerging tech worldwide."
+      },
+      {
+        "title": "The Latest AI News and AI Breakthroughs that Matter Most",
+        "link": "https://www.crescendo.ai/news/latest-ai-news-and-updates",
+        "snippet": "Summary: Xiaomi has announced a next-gen AI voice model optimized for in-car and smart home experiences. The model features faster response times, offline ...",
+        "contexts": [
+          {
+            "idx": 0,
+            "text": "December 26, 2025\n\n# The Latest AI News and AI Breakthroughs that Matter Most: 2025..."
+          }
+        ]
       }
     ]
   }
 }
 ```
 
+````
+
 ### Response Fields
 
-| Field                    | Type    | Description                              |
-| ------------------------ | ------- | ---------------------------------------- |
-| `code`                   | integer | `200` for success                        |
-| `message`                | string  | Status message                           |
-| `data.searchParameters`  | object  | Search parameters used                   |
-| `data.answerBox`         | object  | Google's featured snippet (if available) |
-| `data.organic`           | array   | List of organic search results           |
-| `data.organic[].title`   | string  | Page title                               |
-| `data.organic[].link`    | string  | Page URL                                 |
-| `data.organic[].snippet` | string  | Page description                         |
+| Field                          | Type    | Description                                              |
+| ------------------------------ | ------- | -------------------------------------------------------- |
+| `code`                         | integer | `200` for success                                        |
+| `message`                      | string  | Status message                                           |
+| `took_ms`                      | integer | Time taken in milliseconds                               |
+| `data.organic`                 | array   | List of organic search results                           |
+| `data.organic[].title`         | string  | Page title                                               |
+| `data.organic[].link`          | string  | Page URL                                                 |
+| `data.organic[].snippet`       | string  | Page description                                         |
+| `data.organic[].contexts`      | array   | Full content contexts extracted from the page (optional) |
+| `data.organic[].contexts[].idx`| integer | Index of the context                                     |
+| `data.organic[].contexts[].text`| string | The content text                                         |
 
 ### Error Response
 
@@ -122,7 +128,7 @@ data.data.organic.forEach((result) => {
   "code": 400,
   "message": "Bad Request, missing query parameter"
 }
-```
+````
 
 ## Pricing
 
