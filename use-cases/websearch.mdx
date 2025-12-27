@@ -104,22 +104,20 @@ data.data.organic.forEach((result) => {
 }
 ```
 
-````
-
 ### Response Fields
 
-| Field                          | Type    | Description                                              |
-| ------------------------------ | ------- | -------------------------------------------------------- |
-| `code`                         | integer | `200` for success                                        |
-| `message`                      | string  | Status message                                           |
-| `took_ms`                      | integer | Time taken in milliseconds                               |
-| `data.organic`                 | array   | List of organic search results                           |
-| `data.organic[].title`         | string  | Page title                                               |
-| `data.organic[].link`          | string  | Page URL                                                 |
-| `data.organic[].snippet`       | string  | Page description                                         |
-| `data.organic[].contexts`      | array   | Full content contexts extracted from the page (optional) |
-| `data.organic[].contexts[].idx`| integer | Index of the context                                     |
-| `data.organic[].contexts[].text`| string | The content text                                         |
+| Field                            | Type    | Description                                              |
+| -------------------------------- | ------- | -------------------------------------------------------- |
+| `code`                           | integer | `200` for success                                        |
+| `message`                        | string  | Status message                                           |
+| `took_ms`                        | integer | Time taken in milliseconds                               |
+| `data.organic`                   | array   | List of organic search results                           |
+| `data.organic[].title`           | string  | Page title                                               |
+| `data.organic[].link`            | string  | Page URL                                                 |
+| `data.organic[].snippet`         | string  | Page description                                         |
+| `data.organic[].contexts`        | array   | Full content contexts extracted from the page (optional) |
+| `data.organic[].contexts[].idx`  | integer | Index of the context                                     |
+| `data.organic[].contexts[].text` | string  | The content text                                         |
 
 ### Error Response
 
@@ -128,7 +126,7 @@ data.data.organic.forEach((result) => {
   "code": 400,
   "message": "Bad Request, missing query parameter"
 }
-````
+```
 
 ## Pricing
 

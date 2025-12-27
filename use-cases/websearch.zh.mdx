@@ -104,22 +104,20 @@ data.data.organic.forEach((result) => {
 }
 ```
 
-````
-
 ### 响应字段说明
 
-| 字段                           | 类型    | 描述                                          |
-| ------------------------------ | ------- | --------------------------------------------- |
-| `code`                         | integer | `200` 表示成功                                |
-| `message`                      | string  | 状态信息                                      |
-| `took_ms`                      | integer | 耗时（毫秒）                                  |
-| `data.organic`                 | array   | 自然搜索结果列表                              |
-| `data.organic[].title`         | string  | 页面标题                                      |
-| `data.organic[].link`          | string  | 页面链接                                      |
-| `data.organic[].snippet`       | string  | 页面描述                                      |
-| `data.organic[].contexts`      | array   | 从页面提取的完整上下文（可选）                |
-| `data.organic[].contexts[].idx`| integer | 上下文索引                                    |
-| `data.organic[].contexts[].text`| string | 上下文内容文本                                |
+| 字段                             | 类型    | 描述                           |
+| -------------------------------- | ------- | ------------------------------ |
+| `code`                           | integer | `200` 表示成功                 |
+| `message`                        | string  | 状态信息                       |
+| `took_ms`                        | integer | 耗时（毫秒）                   |
+| `data.organic`                   | array   | 自然搜索结果列表               |
+| `data.organic[].title`           | string  | 页面标题                       |
+| `data.organic[].link`            | string  | 页面链接                       |
+| `data.organic[].snippet`         | string  | 页面描述                       |
+| `data.organic[].contexts`        | array   | 从页面提取的完整上下文（可选） |
+| `data.organic[].contexts[].idx`  | integer | 上下文索引                     |
+| `data.organic[].contexts[].text` | string  | 上下文内容文本                 |
 
 ### 错误响应
 
@@ -128,7 +126,7 @@ data.data.organic.forEach((result) => {
   "code": 400,
   "message": "Bad Request, missing query parameter"
 }
-````
+```
 
 ## 价格
 
