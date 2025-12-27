@@ -104,16 +104,16 @@ data.data.organic.forEach((result) => {
 
 ### 响应字段说明
 
-| 字段                     | 类型    | 描述                       |
-| ------------------------ | ------- | -------------------------- |
-| `code`                   | integer | `0` 表示成功，非零表示错误 |
-| `message`                | string  | 状态信息                   |
-| `data.searchParameters`  | object  | 使用的搜索参数             |
-| `data.answerBox`         | object  | Google 精选摘要（如果有）  |
-| `data.organic`           | array   | 自然搜索结果列表           |
-| `data.organic[].title`   | string  | 页面标题                   |
-| `data.organic[].link`    | string  | 页面链接                   |
-| `data.organic[].snippet` | string  | 页面描述                   |
+| 字段                     | 类型    | 描述                      |
+| ------------------------ | ------- | ------------------------- |
+| `code`                   | integer | `200` 表示成功            |
+| `message`                | string  | 状态信息                  |
+| `data.searchParameters`  | object  | 使用的搜索参数            |
+| `data.answerBox`         | object  | Google 精选摘要（如果有） |
+| `data.organic`           | array   | 自然搜索结果列表          |
+| `data.organic[].title`   | string  | 页面标题                  |
+| `data.organic[].link`    | string  | 页面链接                  |
+| `data.organic[].snippet` | string  | 页面描述                  |
 
 ### 错误响应
 
